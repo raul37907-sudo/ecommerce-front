@@ -1,0 +1,8 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.content-body {
+  min-height: 100%;
+  display: block;
+  padding: 150px 1rem;
+  background : #f6f0d8;
+}

@@ -1,0 +1,16 @@
+<div class="rating-container">
+  @for (star of stars; track star) {
+  <!-- Si la estrella actual es menor o igual al rating (ej. 1, 2, 3, 4 <= 4.5) -->
+  @if (rating >= star) {
+  <i class="bi bi-star-fill"></i>
+  }
+  <!-- Si es una media estrella (ej. 4.5 pasa la prueba para la posición 5) -->
+  @else if (rating >= star - 0.5) {
+  <i class="bi bi-star-half"></i>
+  }
+  <!-- Si la estrella está vacía -->
+  @else {
+  <i class="bi bi-star"></i>
+  }
+  }
+</div>
