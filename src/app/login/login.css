@@ -9,47 +9,177 @@
   --error-color: #ef4444;
 }
 
-/* Reset global para evitar márgenes blancos extraños en la pantalla del celular */
+/* Reset global */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
+  height: 100%;
   min-height: 100vh;
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  background: #667eea;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
 }
 
-/* Contenedor principal ocupando toda la pantalla */
+/* Contenedor principal */
 .login-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 100vh; /* Ocupa el 100% del alto visible */
+  min-height: 100vh;
   padding: 1.5rem;
   box-sizing: border-box;
-
-  /* Fondo en degradado morado */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
 }
 
-/* Tarjeta Blanca Central */
+/* ------------------------------------------------------------- */
+/* BURBUJAS FLOTANTES EN EL FONDO                                 */
+/* ------------------------------------------------------------- */
+
+.bubbles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Detrás de la tarjeta */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.bubbles li {
+  position: absolute;
+  bottom: -150px;
+  background: rgba(255, 255, 255, 0.35); /* Más opaco para resaltar */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  animation: subirBurbujas 15s infinite linear;
+}
+
+/* Distribución y velocidades */
+.bubbles li:nth-child(1)  { left: 8%;  width: 70px;  height: 70px;  animation-duration: 12s; animation-delay: 0s; }
+.bubbles li:nth-child(2)  { left: 18%; width: 30px;  height: 30px;  animation-duration: 9s;  animation-delay: 1s; }
+.bubbles li:nth-child(3)  { left: 28%; width: 50px;  height: 50px;  animation-duration: 14s; animation-delay: 2s; }
+.bubbles li:nth-child(4)  { left: 42%; width: 85px;  height: 85px;  animation-duration: 18s; animation-delay: 0s; }
+.bubbles li:nth-child(5)  { left: 55%; width: 25px;  height: 25px;  animation-duration: 8s;  animation-delay: 3s; }
+.bubbles li:nth-child(6)  { left: 68%; width: 90px;  height: 90px;  animation-duration: 16s; animation-delay: 1s; }
+.bubbles li:nth-child(7)  { left: 78%; width: 40px;  height: 40px;  animation-duration: 11s; animation-delay: 4s; }
+.bubbles li:nth-child(8)  { left: 88%; width: 110px; height: 110px; animation-duration: 20s; animation-delay: 2s; }
+.bubbles li:nth-child(9)  { left: 93%; width: 35px;  height: 35px;  animation-duration: 10s; animation-delay: 0s; }
+.bubbles li:nth-child(10) { left: 48%; width: 60px;  height: 60px;  animation-duration: 13s; animation-delay: 5s; }
+
+@keyframes subirBurbujas {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-125vh) scale(1.2) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------- */
+/* TARJETA TRANSPARENTE + HAZ DE LUZ                             */
+/* ------------------------------------------------------------- */
+
 .login-card {
-  background: #ffffff;
+  position: relative;
   width: 100%;
   max-width: 420px;
   border-radius: 16px;
-  padding: 2.5rem 2rem;
+  padding: 9px; /* Grosor del borde de luz */
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4; /* Importante: Sobre las burbujas */
 }
 
-/* Encabezado */
+/* Rayo Neón Giratorio */
+.login-card::before {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: conic-gradient(
+    transparent 0deg,
+    transparent 270deg,
+    #00f2fe 360deg
+  );
+  animation: girarLuz 2s linear infinite;
+}
+
+/* Capa Interna Transparente con Glassmorphism */
+.login-card-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, .25); /* Transparencia equilibrada */
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 13px;
+  padding: 2.5rem 2rem;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+@keyframes girarLuz {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ------------------------------------------------------------- */
+/* ESTILOS INTERNOS                                              */
+/* ------------------------------------------------------------- */
+
 .login-header {
   text-align: center;
   margin-bottom: 1.5rem;
+}
+
+.login-header-btnClose {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-close-login {
+  cursor: pointer;
+  background: transparent;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  color: #ef4444;
+  transition: color 0.2s;
+}
+
+.aviso-privacidad {
+  color: blue;
+  margin-bottom: 25px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.mensaje {
+  color: blue;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
 .logo-circle {
@@ -65,6 +195,18 @@ html, body {
   margin: 0 auto 1rem auto;
 }
 
+.crear-registro {
+  display: block;
+  margin-top: 25px;
+  text-align: center;
+}
+
+.register-link {
+  color: #312e81;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
 .login-header h2 {
   color: #1f2937;
   font-size: 1.5rem;
@@ -72,26 +214,6 @@ html, body {
   margin: 0 0 0.5rem 0;
 }
 
-.login-header p {
-  color: #6b7280;
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-/* Alerta de Error */
-.error-banner {
-  background-color: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fca5a5;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 1.25rem;
-  text-align: center;
-}
-
-/* Formulario e Inputs */
 .form-group {
   margin-bottom: 1.25rem;
   display: flex;
@@ -130,7 +252,7 @@ html, body {
   border-radius: 8px;
   font-size: 0.95rem;
   outline: none;
-  background-color: #f9fafb;
+  background-color: rgba(255, 255, 255, 0.9);
   box-sizing: border-box;
   transition: border-color 0.2s ease;
 }
@@ -157,7 +279,6 @@ html, body {
   justify-content: center;
 }
 
-/* Fila Checkbox / Olvidaste contraseña */
 .form-actions-row {
   display: flex;
   justify-content: space-between;
@@ -166,12 +287,21 @@ html, body {
   font-size: 0.85rem;
   gap: 0.5rem;
 }
-
+.error-banner{
+color: #dc2626; /* Rojo intenso para el texto */
+  font-family: Arial, Helvetica, sans-serif; /* Tipografía Arial */
+  border: 1px solid #fca5a5;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+}
 .checkbox-container {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #4b5563;
+  color: #1f2937;
   cursor: pointer;
 }
 
@@ -181,7 +311,6 @@ html, body {
   font-weight: 600;
 }
 
-/* Botón adaptable */
 .btn-submit {
   width: 100%;
   padding: 0.85rem;
@@ -198,6 +327,9 @@ html, body {
 
 .btn-submit:hover:not(:disabled) {
   background-color: #4338ca;
+  /* movimiento cuando  pasas el cursor  */
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 25px rgba(236, 72, 153, 0.5);
 }
 
 .btn-submit:disabled {
@@ -207,13 +339,12 @@ html, body {
   opacity: 0.7;
 }
 
-/* Ajustes responsivos móviles */
 @media (max-width: 480px) {
   .login-container {
     padding: 1rem;
   }
 
-  .login-card {
+  .login-card-content {
     padding: 2rem 1.25rem;
   }
 

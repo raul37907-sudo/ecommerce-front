@@ -1,138 +1,109 @@
 <div class="dashboard-wrapper">
 
-  <!-- 1. BARRA SUPERIOR / NAVBAR -->
-  <header class="top-navbar">
-    <div class="logo-area">
-      <i class="bi bi-bag-handle-fill logo-icon"></i>
-      <span class="logo-text">Mi<strong>Tienda</strong></span>
+  <!-- 1. BARRA SUPERIOR / NAVBAR (Fija) -->
+  <div class="navbar-wrapper-green">
+    <header class="top-navbar">
+      <div class="logo-area">
+        <i class="bi bi-bag-handle-fill logo-icon"></i>
+        <h1>Mi Tienda...</h1>
+      </div>
+
+      <div class="search-bar">
+        <i class="bi bi-search search-icon"></i>
+        <input
+          type="text"
+          placeholder="Buscar productos o categorías..."
+          [(ngModel)]="searchQuery"/>
+        <button class="btn-search">Buscar</button>
+      </div>
+
+      <!-- Acciones de usuario -->
+      <div class="user-actions">
+        <a *ngFor="let item of userActions"
+           (click)="handleAction(item)"
+           class="login-link tooltip-container"
+           style="cursor: pointer;">
+          <dotlottie-player
+            [src]="item.lottieSrc"
+            background="transparent"
+            speed="1"
+            [style.width]="item.size"
+            [style.height]="item.size"
+            loop
+            autoplay>
+          </dotlottie-player>
+          <span *ngIf="item.badge" class="badge">{{ item.badge }}</span>
+          <span class="tooltip-text">{{ item.label }}</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- MENÚ DESKTOP -->
+    <div class="desktop-only">
+      <ul class="nav-links">
+        <li><a (click)="selectCategory('todas')" [class.active-category]="selectedCategory === 'todas'" style="cursor: pointer;">🛍️ Todos los productos</a></li>
+        <li><a (click)="selectCategory('moda')" [class.active-category]="selectedCategory === 'moda'" style="cursor: pointer;">👜 Moda</a></li>
+        <li><a (click)="selectCategory('electronica')" [class.active-category]="selectedCategory === 'electronica'" style="cursor: pointer;">💻 Electrónica</a></li>
+        <li><a (click)="selectCategory('hogar')" [class.active-category]="selectedCategory === 'hogar'" style="cursor: pointer;">🏠 Hogar</a></li>
+        <li><a (click)="selectCategory('deportes')" [class.active-category]="selectedCategory === 'deportes'" style="cursor: pointer;">⚽ Deportes</a></li>
+        <li><a (click)="selectCategory('belleza')" [class.active-category]="selectedCategory === 'belleza'" style="cursor: pointer;">✨ Belleza</a></li>
+        <li><a (click)="selectCategory('juguetes')" [class.active-category]="selectedCategory === 'juguetes'" style="cursor: pointer;">🎮 Juguetes</a></li>
+        <li><a (click)="selectCategory('ofertas')" [class.active-category]="selectedCategory === 'ofertas'" class="highlight-link" style="cursor: pointer;">🔥 Ofertas</a></li>
+      </ul>
     </div>
 
-    <div class="search-bar">
-      <i class="bi bi-search search-icon"></i>
-      <input type="text" placeholder="Buscar productos, marcas o categorías..." />
-      <button class="btn-search">Buscar</button>
-    </div>
-
-    <!-- Integración del usuario y logout -->
-    <div class="user-actions">
-      <button class="btn-icon-text" (click)="logout()">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Cerrar sesión</span>
-      </button>
-
-      <button class="btn-icon-text">
-        <i class="bi bi-person"></i>
-        <span>Iniciar sesión</span>
-      </button>
-
-
-      <button class="btn-cart">
-        <i class="bi bi-cart4"></i>
-        <span>Carrito</span>
-        <span class="badge">2</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- 2. BARRA DE CATEGORÍAS Y NAVEGACIÓN SECUNDARIA -->
-  <nav class="categories-nav">
-
-    <!-- Desplegable SELECT (Solo visible en móviles) -->
+    <!-- MENÚ MOBILE -->
     <div class="categories-dropdown mobile-only">
       <i class="bi bi-list menu-icon"></i>
-      <span class="dropdown-label">Todas las categorías</span>
-
-      <select class="categories-select" aria-label="Seleccionar categoría">
-        <option value="" disabled selected>Todas las categorías</option>
-        <option value="electronica">💻 Electrónica</option>
+      <span class="dropdown-label"> Categorías </span>
+      <select class="categories-select"
+              [value]="selectedCategory"
+              (change)="selectCategory($any($event.target).value)"
+              aria-label="Seleccionar categoría">
+        <option value="todas">🛍️ Todos los productos</option>
         <option value="moda">👜 Moda</option>
+        <option value="electronica">💻 Electrónica</option>
         <option value="hogar">🏠 Hogar</option>
         <option value="deportes">⚽ Deportes</option>
         <option value="belleza">✨ Belleza</option>
         <option value="juguetes">🎮 Juguetes</option>
         <option value="ofertas">🔥 Ofertas</option>
       </select>
-
       <i class="bi bi-chevron-down select-icon"></i>
     </div>
+  </div>
 
-    <!-- Menú de enlaces horizontales (Solo visible en computadoras) -->
-    <ul class="nav-links desktop-only">
-      <li><a href="#"><i class="bi bi-laptop"></i> Electrónica</a></li>
-      <li><a href="#"><i class="bi bi-bag-heart"></i> Moda</a></li>
-      <li><a href="#"><i class="bi bi-house-door"></i> Hogar</a></li>
-      <li><a href="#"><i class="bi bi-dribbble"></i> Deportes</a></li>
-      <li><a href="#"><i class="bi bi-magic"></i> Belleza</a></li>
-      <li><a href="#"><i class="bi bi-controller"></i> Juguetes</a></li>
-      <li><a href="#" class="highlight-link"><i class="bi bi-fire"> </i> Ofertas  🔥</a></li>
-    </ul>
-
-    <!--div class="favorites-link">
-      <i class="bi bi-heart"></i>
-      <span>Favoritos</span>
-    </div-->
-  </nav>
-
-
-
-  <!-- 3. CONTENIDO PRINCIPAL (SIDEBAR + PRODUCTOS) -->
+  <!-- 2. CONTENIDO PRINCIPAL CON SCROLL -->
   <div class="main-content">
-
-    <!-- LATERAL IZQUIERDO: FILTROS -->
-    <aside class="sidebar">
-      <div class="filter-group">
-        <h3>Categorías principales</h3>
-        <ul>
-          <li class="active"><i class="bi bi-laptop"></i> Tecno & Gadgets</li>
-          <li><a href="#"><i class="bi bi-phone"></i> Celulares</a></li>
-          <li><a href="#"><i class="bi bi-headphones"></i> Audio</a></li>
-          <li><a href="#"><i class="bi bi-watch"></i> Wearables</a></li>
-        </ul>
-      </div>
-
-      <div class="filter-group">
-        <h3>Rango de Precio</h3>
-        <div class="price-inputs">
-          <input type="number" placeholder="Min" />
-          <span>-</span>
-          <input type="number" placeholder="Max" />
-        </div>
-      </div>
-    </aside>
-
-    <!-- ÁREA DE PRODUCTOS -->
     <main class="products-section">
 
-      <!-- Encabezado de catálogo -->
+      <!-- ENCABEZADO Y CONTADOR DE RESULTADOS -->
       <div class="results-header">
-        <h2>Resultados <span>(128 productos)</span></h2>
+        <h2>Resultados <span>({{ filteredProducts.length }} productos)</span></h2>
         <div class="sort-options">
-          <label for="sort">Ordenar por:</label>
+          <label for="sort">Ordenar por: </label>
           <select id="sort">
-            <option>Más relevantes</option>
-            <option>Menor precio</option>
-            <option>Mayor precio</option>
+            <option value="relevantes">Más relevantes</option>
+            <option value="precio-bajo">Menor precio</option>
+            <option value="precio-alto">Mayor precio</option>
           </select>
         </div>
       </div>
 
       <!-- REJILLA DINÁMICA DE PRODUCTOS -->
       <div class="products-grid">
-
-        @for (product of products; track product.id) {
-        <div class="product-card">
-          <button class="btn-wishlist" aria-label="Añadir a favoritos">
-            <i class="bi bi-heart"></i>
-          </button>
-
-          <div class="product-img">
-            <img [src]="product.imageUrl" [alt]="product.title" />
-          </div>
-
+        @for (product of filteredProducts; track product.id) {
+        <!-- Navegación directa con routerLink en la tarjeta -->
+        <div class="product-card" [routerLink]="['/descripcion-producto', product.id]">
           <div class="product-info">
+
+            <div class="product-img">
+              <img [src]="product.imageUrl" [alt]="product.title" />
+            </div>
+
             <h3 class="product-title">{{ product.title }}</h3>
 
-            <!-- ESTRELLAS CALCULADAS SEGÚN EL RATING DE CADA PRODUCTO -->
+            <!-- RATING CON ESTRELLAS -->
             <div class="rating-container">
               @for (star of stars; track star) {
               @if (product.rating >= star) {
@@ -150,27 +121,26 @@
 
             <div class="price">${{ product.price | number:'1.2-2' }}</div>
 
-            <button class="btn-add-cart">
+            <!-- El botón de agregar evita que se active la navegación de la tarjeta -->
+            <button class="btn-add-cart" (click)="$event.stopPropagation(); $event.preventDefault();">
               <i class="bi bi-cart-plus"></i> Agregar al carrito
             </button>
           </div>
         </div>
         }
-
       </div>
 
-      <!-- 4. PAGINACIÓN -->
+      <!-- PAGINACIÓN -->
       <div class="pagination-footer">
         <div class="pagination-controls">
           <button class="page-btn"><i class="bi bi-chevron-left"></i></button>
           <button class="page-btn active">1</button>
           <button class="page-btn">2</button>
           <button class="page-btn">3</button>
-          <button class="page-btn">4</button>
-          <button class="page-btn">5</button>
           <button class="page-btn"><i class="bi bi-chevron-right"></i></button>
         </div>
-        <span class="results-count">Mostrando 1 - 8 de 128 productos</span>
+
+        <span class="results-count">Mostrando {{ filteredProducts.length }} productos</span>
       </div>
 
     </main>

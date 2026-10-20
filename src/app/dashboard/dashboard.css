@@ -1,6 +1,6 @@
 :root {
-  --primary-blue: #0070e0;
-  --primary-blue-hover: #0056b3;
+  --primary-blue: #0056b3;
+  --primary-blue-hover: #0070e0;
   --bg-light: #f4f6f8;
   --card-bg: #ffffff;
   --text-dark: #1e293b;
@@ -13,47 +13,61 @@
   box-sizing: border-box;
 }
 
-/* Envoltorio General */
+/* Layout general */
+/* Contenedor principal con el degradado verde */
 .dashboard-wrapper {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  background-color: var(--bg-light);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-dark);
-  overflow-x: hidden; /* Evita desbordamiento horizontal */
+  background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
+  width: 100%;
 }
 
-/* 1. NAVBAR SUPERIOR */
+/* Hace que toda la sección verde y de categorías permanezca fija al hacer scroll */
+.navbar-wrapper-green {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #2ecc71;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Opcional: Si quieres que el título 'Resultados' y el filtro también queden fijos */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+
+
+
+/* Navbar principal */
 .top-navbar {
+  background: transparent;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #ffffff;
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid var(--border-light);
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.3rem;
-  color: var(--primary-blue);
-  cursor: pointer;
-}
-
+/* Barra de búsqueda */
 .search-bar {
   display: flex;
-  flex: 1;
-  min-width: 200px;
+  flex: 4;
+  min-width: 100px;
   position: relative;
 }
 
 .search-icon {
   position: absolute;
-  left: 12px;
+  left: 15px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
@@ -70,13 +84,13 @@
 }
 
 .btn-search {
-  background-color: var(--primary-blue);
+  background-color: #0f766e;
   color: #ffffff;
-  border: none;
-  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-light);
+  padding: 0.6rem 1rem;
   border-radius: 0 8px 8px 0;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 0.85rem;
 }
 
@@ -86,175 +100,95 @@
   gap: 0.5rem;
 }
 
-.btn-icon-text, .btn-cart {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.85rem;
-  color: var(--text-dark);
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-}
+/* ========================================================
+   2. BARRA DE CATEGORÍAS
+   ======================================================== */
 
-.btn-cart {
-  position: relative;
-}
 
-.badge {
-  background-color: #ef4444;
-  color: white;
-  font-size: 0.7rem;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 10px;
-}
-
-/* 2. BARRA DE CATEGORÍAS */
-.categories-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #ffffff;
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid var(--border-light);
-  font-size: 0.9rem;
-  gap: 1rem;
-}
-
-.favorites-link {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-/* MENÚ DESK (PC) */
+/* MENÚ ESCRITORIO (PC) */
 .desktop-only {
   display: flex;
+  width: 100%;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
   gap: 1.25rem;
-  margin: 0;
-  padding: 0;
+  width: 100%;
+  background-color: #4682B4;
+  padding: 0.6rem 1rem;
 }
 
-.nav-links a {
+.nav-links li a {
   text-decoration: none;
-  color: var(--text-dark);
+  color: #1e293b;
   font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
-.highlight-link {
-  color: #dc2626 !important;
-  font-weight: bold;
+.nav-links li a:hover {
+  background-color: #f1f5f9;
 }
 
-/* MENÚ MOBILE (SELECT) */
+/* CLASE PARA LA CATEGORÍA ACTIVA EN PC */
+.active-category {
+  background-color: #ffffff !important;
+  color: var(--text-dark) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* MENÚ MÓVIL (SELECT) */
 .mobile-only {
   display: none;
 }
 
 .categories-dropdown {
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background-color: #f1f5f9;
+  width: 100%;
+  background-color: #ffffff;
   padding: 0.4rem 0.8rem;
   border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: var(--text-dark);
+  border: 1px solid var(--border-light);
 }
 
 .categories-select {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  opacity: 0;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  outline: none;
   cursor: pointer;
-  appearance: none;
+  padding-right: 1.5rem;
   -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-.menu-icon, .select-icon, .dropdown-label {
+.select-icon {
+  position: absolute;
+  right: 12px;
   pointer-events: none;
+  color: var(--text-dark);
 }
 
-/* 3. CONTENIDO PRINCIPAL */
+/* ========================================================
+   3. CONTENIDO PRINCIPAL Y PRODUCTOS
+   ======================================================== */
 .main-content {
   display: flex;
   padding: 1.25rem;
   gap: 1.25rem;
+  background-color: var(--bg-light);
 }
 
-/* SIDEBAR */
-.sidebar {
-  width: 240px;
-  background: #ffffff;
-  padding: 1.25rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-light);
-  height: fit-content;
-  flex-shrink: 0;
-}
-
-.filter-group {
-  margin-bottom: 1.25rem;
-}
-
-.filter-group h3 {
-  font-size: 0.9rem;
-  font-weight: 700;
-  margin-bottom: 0.6rem;
-}
-
-.filter-group ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.filter-group li {
-  padding: 0.4rem 0;
-  font-size: 0.85rem;
-}
-
-.filter-group li a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.filter-group li.active {
-  font-weight: bold;
-  color: var(--primary-blue);
-}
-
-.price-inputs {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.price-inputs input {
-  width: 100%;
-  padding: 0.4rem;
-  border: 1px solid var(--border-light);
-  border-radius: 6px;
-  font-size: 0.85rem;
-}
-
-/* REJILLA Y PRODUCTOS */
 .products-section {
   flex: 1;
   min-width: 0;
@@ -272,12 +206,14 @@
 .results-header h2 {
   font-size: 1.1rem;
   margin: 0;
+  color: var(--text-dark);
+  font-weight: 700;
 }
 
 .results-header span {
-  color: var(--text-muted);
   font-size: 0.85rem;
-  font-weight: normal;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .sort-options select {
@@ -286,8 +222,10 @@
   border: 1px solid var(--border-light);
   outline: none;
   font-size: 0.85rem;
+  background-color: #ffffff;
 }
 
+/* TARJETAS Y REJILLA */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -302,17 +240,14 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
 }
 
-.btn-wishlist {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 1rem;
-  color: var(--text-muted);
-  cursor: pointer;
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--primary-blue);
 }
 
 .product-img {
@@ -328,24 +263,25 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img img {
+  transform: scale(1.08);
 }
 
 .product-title {
   font-size: 0.9rem;
   font-weight: 600;
   margin: 0 0 0.4rem 0;
-}
-
-.rating-container {
-  color: var(--star-yellow);
-  font-size: 0.8rem;
-  margin-bottom: 0.4rem;
+  color: var(--text-dark);
 }
 
 .price {
   font-size: 1.1rem;
   font-weight: 800;
   margin-bottom: 0.6rem;
+  color: var(--text-dark);
 }
 
 .btn-add-cart {
@@ -365,7 +301,7 @@
   margin-top: auto;
 }
 
-/* PAGINACIÓN */
+/* PAGINACIÓN Y CONTADOR */
 .pagination-footer {
   display: flex;
   justify-content: space-between;
@@ -387,6 +323,7 @@
   padding: 0.35rem 0.7rem;
   border-radius: 6px;
   font-size: 0.85rem;
+  cursor: pointer;
 }
 
 .page-btn.active {
@@ -396,72 +333,115 @@
 }
 
 .results-count {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
+  font-weight: 600;
 }
 
+/* GIFS Y ANIMACIONES */
+.login-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 500;
+}
+
+dotlottie-player {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1e293b;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  z-index: 100;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
 
 /* ========================================================
-   REGLAS PARA COMPUTADORA (PANTALLA GRANDE)
+   REGLAS PARA COMPUTADORA VS MÓVIL
    ======================================================== */
-
-/* Oculta el selector de celular por defecto en PC */
 .mobile-only {
-
   display: none !important;
 }
 
-/* Muestra la lista horizontal en PC */
 .desktop-only {
   display: flex !important;
 }
 
-
-/* ========================================================
-   MEDIA QUERIES PARA ADAPTACIÓN MÓVIL
-   ======================================================== */
-
 @media (max-width: 768px) {
-  /* Muestra/Oculta menús */
   .desktop-only {
     display: none !important;
   }
+
   .mobile-only {
-    display: inline-flex !important;
+    display: flex !important;
   }
 
-  /* El Navbar se ajusta en vertical/flex */
   .top-navbar {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .logo-area {
-    justify-content: center;
-  }
-
-  .search-bar {
-    width: 100%;
-  }
-
   .user-actions {
     justify-content: space-around;
     width: 100%;
-    border-top: 1px dashed var(--border-light);
+    border-top: 1px dashed rgba(255, 255, 255, 0.3);
     padding-top: 0.5rem;
   }
 
-  /* La estructura pasa de Horizontal a Vertical */
-  .main-content {
+  .tooltip-container {
     flex-direction: column;
-    padding: 0.9rem;
+    align-items: center;
+    gap: 0.2rem;
   }
 
-  .sidebar {
-    width: 95%; /* Ocupa todo el ancho en móvil */
+  .tooltip-text {
+    position: static;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    background: transparent;
+    color: #ffffff;
+    padding: 0;
+    box-shadow: none;
+    font-size: 0.75rem;
+    font-weight: 500;
   }
 
-  /* Rejilla de productos en móvil: 2 por fila */
+  .main-content {
+    padding: 0.8rem;
+  }
+
   .products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.6rem;

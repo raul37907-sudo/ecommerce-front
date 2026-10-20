@@ -1,12 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
+import { ModalRegistroComponent } from './modal-registro.component';
+import { AuthService } from '../auth.service'; // <--- Importa tu servicio
 
 @Component({
   selector: 'app-login',
@@ -18,15 +20,31 @@ import { Router } from '@angular/router';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    ModalRegistroComponent
   ],
   styleUrl: './login.css',
   templateUrl: './login.html',
 })
 export class LoginComponent {
-  router = inject(Router);
+  private router = inject(Router);
+  private platformId = inject(PLATFORM_ID);
+  private authService = inject(AuthService); // <--- Inyecta el servicio
 
-  // Control de visibilidad de la contraseña
+  onClose(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
+  isRegisterModalOpen: boolean = false;
+
+  openRegisterModal(): void {
+    this.isRegisterModalOpen = true;
+  }
+
+  closeRegisterModal(): void {
+    this.isRegisterModalOpen = false;
+  }
+
   hidePassword = true;
 
   user = {
@@ -41,7 +59,6 @@ export class LoginComponent {
 
   loginValid: boolean = true;
 
-  // Método para comprobar si la cadena cumple con el formato estándar de email
   isValidEmailFormat(email: string): boolean {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
@@ -52,16 +69,17 @@ export class LoginComponent {
   }
 
   login(): void {
-    // 1. Verifica formato de email
     if (!this.isValidEmailFormat(this.user.email)) {
       this.loginValid = false;
       return;
     }
 
-    // 2. Compara credenciales
     if (this.validateLogin(this.user.email, this.user.password)) {
-      localStorage.setItem('loggedInUser', JSON.stringify(this.user.email));
       this.loginValid = true;
+
+      // Usa el método del servicio para guardar la sesión y notificar al Dashboard
+      this.authService.login({ email: this.user.email }, 'token_falso_abc123');
+
       this.router.navigate(['/dashboard']);
     } else {
       this.loginValid = false;

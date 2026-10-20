@@ -1,0 +1,154 @@
+<!-- ESTRUCTURA DEL MODAL DE REGISTRO  (click)="onClose()"  -->
+<div class="modal-overlay" ><!-- div class="modal-overlay" (click)="onClose()"hace que cierre el  modal  presionado  fuera -->
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h3>Crear nueva cuenta</h3>
+    </div>
+
+    <form [formGroup]="registroForm" (ngSubmit)="onRegister()" novalidate>
+
+      <!-- Nombre Completo -->
+      <div class="form-group mb-3">
+        <label>Nombre completo</label>
+        <input type="text" class="form-control" formControlName="name" placeholder="Tu nombre">
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('name')?.hasError('required') && registroForm.get('name')?.touched">
+        <small class="mensaje-error">⚠️ El nombre completo es obligatorio</small>
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('name')?.hasError('pattern') && registroForm.get('name')?.touched">
+        <small class="mensaje-error">⚠️ El nombre solo debe contener letras y espacios</small>
+      </div>
+
+      <!-- Correo Electrónico -->
+      <div class="form-group mb-3">
+        <label>Correo electrónico</label>
+        <input type="email" class="form-control" formControlName="email" placeholder="correo@ejemplo.com">
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('email')?.hasError('email') && registroForm.get('email')?.touched">
+        <small class="mensaje-error">⚠️ Ingresa un formato de correo electrónico válido (ej. usuario@dominio.com)</small>
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('email')?.hasError('invalidDomain') && registroForm.get('email')?.touched">
+        <small class="mensaje-error">
+          ⚠️ El dominio del correo no está permitido. Usar: {{ allowedDomains.join(', ') }}
+        </small>
+      </div>
+
+      <!-- Dirección -->
+      <div class="form-group mb-3">
+        <label>Dirección</label>
+        <input type="text" class="form-control" formControlName="direccion" placeholder="Ingresa tu dirección">
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('direccion')?.hasError('required') && registroForm.get('direccion')?.touched">
+        <small class="mensaje-error">⚠️ La dirección es obligatoria</small>
+      </div>
+
+      <!-- Fecha de Nacimiento -->
+      <div class="form-group mb-3">
+        <label>Fecha de Nacimiento</label>
+        <input type="date" class="form-control" formControlName="fechaNacimiento" [max]="maxDate">
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('fechaNacimiento')?.hasError('futureDate') && registroForm.get('fechaNacimiento')?.touched">
+        <small class="mensaje-error">⚠️ La fecha de nacimiento no puede ser mayor a la fecha actual</small>
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('fechaNacimiento')?.hasError('underage') && registroForm.get('fechaNacimiento')?.touched">
+        <small class="mensaje-error">⚠️ Debes tener al menos 18 años para registrarte</small>
+      </div>
+
+      <!-- Número Celular -->
+      <div class="form-group mb-3">
+        <label>Número Celular</label>
+        <input
+          type="tel"
+          class="form-control"
+          formControlName="phoneNumber"
+          placeholder="Ingresa tu número celular"
+          maxlength="10"
+          (keypress)="onlyNumbers($event)">
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('phoneNumber')?.hasError('pattern') && registroForm.get('phoneNumber')?.touched">
+        <small class="mensaje-error">⚠️ Telefónico inválido, debe contener exactamente 10 dígitos numéricos</small>
+      </div>
+
+      <!-- Campo 1: Contraseña -->
+      <div class="form-group mb-3">
+        <label for="reg-password">Contraseña</label>
+        <div class="input-wrapper">
+          <input
+            id="reg-password"
+            [type]="showPassword.main ? 'text' : 'password'"
+            class="form-control"
+            formControlName="password"
+            placeholder="Crea una contraseña (mínimo 8 caracteres)" />
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility('main')"
+            tabindex="-1"
+            aria-label="Mostrar u ocultar contraseña">
+            <i [class]="showPassword.main ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('password')?.hasError('minlength') && registroForm.get('password')?.touched">
+        <small class="mensaje-error">⚠️ La contraseña debe tener al menos 8 caracteres</small>
+      </div>
+
+      <!-- Campo 2: Confirmar Contraseña -->
+      <div class="form-group mb-3">
+        <label for="reg-confirm-password">Confirmar Contraseña</label>
+        <div class="input-wrapper">
+          <input
+            id="reg-confirm-password"
+            [type]="showPassword.confirm ? 'text' : 'password'"
+            class="form-control"
+            formControlName="confirmaPass"
+            placeholder="Confirma la contraseña" />
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility('confirm')"
+            tabindex="-1"
+            aria-label="Mostrar u ocultar confirmación de contraseña">
+            <i [class]="showPassword.confirm ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mensajes dinámicos de coincidencia -->
+      <div class="mensaje-container" *ngIf="registroForm.get('confirmaPass')?.hasError('passwordMismatch') && registroForm.get('confirmaPass')?.touched">
+        <small class="mensaje-error">⚠️ Las contraseñas no coinciden</small>
+      </div>
+      <div class="mensaje-container" *ngIf="!registroForm.get('confirmaPass')?.hasError('passwordMismatch') && registroForm.get('confirmaPass')?.value && registroForm.get('password')?.valid">
+        <small class="mensaje-exito">✓ ¡Contraseña confirmada correctamente!</small>
+      </div>
+
+      <!-- Términos y condiciones -->
+      <div class="form-group mb-3">
+        <label class="checkbox-container">
+          <input type="checkbox" formControlName="acceptTerms" />
+          Aceptar Términos y condiciones
+        </label>
+        <a href="#" class="terminos-Condiciones" (click)="$event.preventDefault()">Leer términos y condiciones</a>
+      </div>
+      <div class="mensaje-container" *ngIf="registroForm.get('acceptTerms')?.invalid && registroForm.get('acceptTerms')?.touched">
+        <small class="mensaje-error">⚠️ Debes aceptar los términos y condiciones para continuar</small>
+      </div>
+
+      <!-- Botón de Envío -->
+      <button type="submit" class="btn-submit" [disabled]="registroForm.invalid">
+        Registrarme
+      </button>
+
+      <button type="button" class="btn-close" (click)="onClose()" >Regresar</button>
+
+
+    </form>
+
+  </div>
+</div>
+
+
+<!--descripcion  caracteristicas ,  imagenes,  cometarios , sugerencias del  mismo  producto -->

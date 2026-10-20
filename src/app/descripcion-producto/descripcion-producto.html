@@ -1,0 +1,55 @@
+<div class="product-detail-wrapper">
+
+  <!-- Botón para regresar al Dashboard -->
+  <a routerLink="/dashboard" class="btn-regresar">
+    <i class="bi bi-arrow-left"></i> Volver a la tienda
+  </a>
+
+  <!-- Contenedor principal si el producto existe -->
+  <div *ngIf="product; else productoNoEncontrado" class="product-detail-container">
+
+    <!-- Columna Izquierda: Imagen del Producto -->
+    <div class="detail-img-box">
+      <img [src]="product.imageUrl" [alt]="product.title">
+    </div>
+
+    <!-- Columna Derecha: Información y Especificaciones -->
+    <div class="detail-info-box">
+      <span class="badge-category">{{ product.category | uppercase }}</span>
+      <h1 class="detail-title">{{ product.title }}</h1>
+
+      <!-- Calificación -->
+      <div class="detail-rating">
+        <span>⭐ {{ product.rating }}</span>
+        <span class="reviews">({{ product.reviewsCount }} opiniones)</span>
+      </div>
+
+      <!-- Precio -->
+      <div class="detail-price">
+        ${{ product.price | number:'1.2-2' }}
+      </div>
+
+      <!-- Descripción -->
+      <p class="detail-description">
+        {{ product.description || 'Disfruta de este excelente producto diseñado con los más altos estándares de calidad para satisfacer todas tus necesidades diarias.' }}
+      </p>
+
+      <!-- Botones de Acción -->
+      <div class="detail-actions">
+        <button class="btn-comprar">Comprar ahora</button>
+        <button class="btn-carrito">Agregar al carrito</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Plantilla por si el ID no existe -->
+  <ng-template #productoNoEncontrado>
+    <div class="not-found">
+      <h2>Producto no encontrado</h2>
+      <p>Lo sentimos, el producto que buscas no existe o fue removido.</p>
+      <a routerLink="/dashboard" class="btn-regresar">Ir al inicio</a>
+    </div>
+  </ng-template>
+
+</div>

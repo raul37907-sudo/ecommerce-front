@@ -1,0 +1,174 @@
+/* Fondo oscuro translúcido que cubre toda la pantalla */
+.modal-overlay {
+  position: fixed
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+ align-items: flex-start; /* <--- Cambiado de 'center' a 'flex-start' para mandarlo arriba */
+   padding-top: 10px;       /* <--- Margen superior para que no pegue totalmente al borde de la pantalla */
+   z-index: 500;
+   overflow-y: auto;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 2.5rem; /* Espacio interno a la derecha para no empalmar el texto con el ojo */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1.1rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tarjeta flotante del Modal */
+.modal-card {
+background: rgba(255, 255, 255, .7); /* Transparencia equilibrada */
+  padding: 18px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  position: relative;
+  animation: fadeIn 1.125s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* Encabezado: Título a la izquierda, botón cerrar a la derecha */
+.modal-header {
+  display: flex;
+  justify-content: space-between; /* Envía el título a la izquierda y la X a la derecha */
+   align-items: center;            /* Los alinea verticalmente al centro el modal */
+  margin-bottom:1px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* Botón 'regresar' estilizado */
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: blue;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+
+}
+
+.btn-close:hover { /* permite  que aparesca el  fondo al pasar  el  cursor */
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* Grupos del formulario organizados verticalmente */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 0.975rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* Inputs bonitos estilo Material/Moderno */
+.form-group input {
+  padding: 10px 10px;
+  border: 3px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus { /* margen de los input´s */
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* mensaje  de claves no  coinciden*/
+.mensajeClave{
+color: red;
+}
+
+/* Botón de envío */
+.btn-submit {
+  width: 40%;
+  padding: 12px;
+  background-color: #6366f1;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.2s;
+}
+
+.mensaje-container {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.mensaje-error {
+  color: #dc2626; /* Rojo */
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.mensaje-exito {
+  color: #16a34a; /* Verde */
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+/* Opcional: estado deshabilitado para el botón */
+.btn-submit:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
