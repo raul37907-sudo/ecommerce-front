@@ -1,0 +1,51 @@
+
+  <div class="promos-container">
+
+    <!-- Carrusel Principal -->
+    <mat-card class="promo-main-carousel">
+      <div class="carousel-track">
+        @for (product of carouselProducts; track product.id; let i = $index) {
+        <div class="carousel-slide" [class.active]="i === currentIndex" [routerLink]="['/descripcion-producto', product.id]" style="cursor: pointer;">
+          <img [src]="product.imageUrl" [alt]="product.title" />
+          <div class="carousel-caption">
+            <h3>{{ product.title }}</h3>
+            <p class="price">${{ product.price | number:'1.2-2' }}</p>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="carousel-indicators">
+        @for (product of carouselProducts; track product.id; let i = $index) {
+        <span class="dot" [class.active]="i === currentIndex" (click)="setCurrentSlide(i)"></span>
+        }
+      </div>
+    </mat-card>
+
+    <!-- Banners Laterales en Carrusel (Opcional, si quieres mostrarlos) -->
+    <div class="promo-side-banners">
+
+      <!-- Banner Lateral 1 -->
+      <mat-card class="side-banner-card">
+        <div class="carousel-track">
+          @for (product of banner1Products; track product.id; let i = $index) {
+          <div class="carousel-slide" [class.active]="i === currentIndexBanner1" [routerLink]="['/descripcion-producto', product.id]" style="cursor: pointer;">
+            <img [src]="product.imageUrl" [alt]="product.title" />
+          </div>
+          }
+        </div>
+      </mat-card>
+
+      <!-- Banner Lateral 2 -->
+      <mat-card class="side-banner-card">
+        <div class="carousel-track">
+          @for (product of banner2Products; track product.id; let i = $index) {
+          <div class="carousel-slide" [class.active]="i === currentIndexBanner2" [routerLink]="['/descripcion-producto', product.id]" style="cursor: pointer;">
+            <img [src]="product.imageUrl" [alt]="product.title" />
+          </div>
+          }
+        </div>
+      </mat-card>
+
+    </div>
+
+  </div>

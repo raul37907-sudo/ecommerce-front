@@ -1,24 +1,31 @@
-/* Fondo oscuro translúcido que cubre toda la pantalla */
+/* ============================================================= */
+/* ESTILOS DEL MODAL DE REGISTRO (.modal-overlay)                */
+/* ============================================================= */
+
 .modal-overlay {
-  position: fixed
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.1); /* Fondo oscuro para ocultar el login y resaltar el registro */
   display: flex;
   justify-content: center;
- align-items: flex-start; /* <--- Cambiado de 'center' a 'flex-start' para mandarlo arriba */
-   padding-top: 10px;       /* <--- Margen superior para que no pegue totalmente al borde de la pantalla */
-   z-index: 500;
-   overflow-y: auto;
+  align-items: center;    /* Centra perfectamente el modal en medio de la pantalla */
+  z-index: 1000;          /* Asegura que esté por encima de todo */
+  overflow-y: auto;       /* Permite scroll interno si la pantalla es muy pequeña */
+  padding: 20px 0;        /* Margen de seguridad superior e inferior */
 }
+
+
+
+
 
 .input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 80%;
 }
 
 .input-wrapper input {
@@ -45,23 +52,26 @@
 
 /* Tarjeta flotante del Modal */
 .modal-card {
-background: rgba(255, 255, 255, .7); /* Transparencia equilibrada */
-  padding: 18px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 420px;
+  background: rgba(255, 255, 255, .85); /* Subimos un poco la opacidad para que los campos se lean nítidos */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 70%);
+  padding: 20px;
+  border-radius: 20px;
+  width: 70%;
+  max-width: 400px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
   position: relative;
-  animation: fadeIn 1.125s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out;
   box-sizing: border-box;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 /* Encabezado: Título a la izquierda, botón cerrar a la derecha */
 .modal-header {
   display: flex;
-  justify-content: space-between; /* Envía el título a la izquierda y la X a la derecha */
-   align-items: center;            /* Los alinea verticalmente al centro el modal */
-  margin-bottom:1px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .modal-header h3 {
@@ -82,10 +92,9 @@ background: rgba(255, 255, 255, .7); /* Transparencia equilibrada */
   padding: 4px 8px;
   border-radius: 6px;
   transition: background 0.2s, color 0.2s;
-
 }
 
-.btn-close:hover { /* permite  que aparesca el  fondo al pasar  el  cursor */
+.btn-close:hover {
   background: #f3f4f6;
   color: #111827;
 }
@@ -94,39 +103,38 @@ background: rgba(255, 255, 255, .7); /* Transparencia equilibrada */
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   text-align: left;
 }
 
 .form-group label {
-  font-size: 0.975rem;
-  font-weight: 500;
+  font-size: 0.775rem;
+  font-weight: 100;
   margin-bottom: 6px;
+
 }
 
-/* Inputs bonitos estilo Material/Moderno */
 .form-group input {
-  padding: 10px 10px;
+  padding: 6px;
   border: 3px solid #d1d5db;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.90rem;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: rgba(25, 255, 255, 0.4);
 }
 
-.form-group input:focus { /* margen de los input´s */
+.form-group input:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
-/* mensaje  de claves no  coinciden*/
-.mensajeClave{
-color: red;
+.mensajeClave {
+  color: red;
 }
 
-/* Botón de envío */
 .btn-submit {
-  width: 40%;
+  width: 50%;
   padding: 12px;
   background-color: #6366f1;
   color: #ffffff;
@@ -136,7 +144,7 @@ color: red;
   font-weight: 600;
   cursor: pointer;
   margin-top: 8px;
-  transition: background-color 0.2s;
+  transition: background-color 0.4s;
 }
 
 .mensaje-container {
@@ -145,18 +153,17 @@ color: red;
 }
 
 .mensaje-error {
-  color: #dc2626; /* Rojo */
+  color: #dc2626;
   font-weight: 500;
   font-size: 0.85rem;
 }
 
 .mensaje-exito {
-  color: #16a34a; /* Verde */
+  color: #16a34a;
   font-weight: 500;
   font-size: 0.85rem;
 }
 
-/* Opcional: estado deshabilitado para el botón */
 .btn-submit:disabled {
   background-color: #9ca3af;
   cursor: not-allowed;
@@ -170,5 +177,243 @@ color: red;
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ============================================================= */
+/* ESTILOS GLOBALES Y LOGIN                                      */
+/* ============================================================= */
+
+:root {
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --bg-gradient-start: #667eea;
+  --bg-gradient-end: #764ba2;
+  --text-dark: #1f2937;
+  --text-muted: #6b7280;
+  --border-color: #d1d5db;
+  --error-color: #ef4444;
+}
+
+/* Reset global corregido al 100% para evitar pantallas cortadas */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.login-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow: hidden;
+}
+
+/* Burbujas y tarjeta de login se mantienen intactas */
+.bubbles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.bubbles li {
+  position: absolute;
+  bottom: -150px;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  animation: subirBurbujas 15s infinite linear;
+}
+
+.bubbles li:nth-child(1)  { left: 8%;  width: 70px;  height: 70px;  animation-duration: 12s; animation-delay: 0s; }
+.bubbles li:nth-child(2)  { left: 18%; width: 30px;  height: 30px;  animation-duration: 9s;  animation-delay: 1s; }
+.bubbles li:nth-child(3)  { left: 28%; width: 50px;  height: 50px;  animation-duration: 14s; animation-delay: 2s; }
+.bubbles li:nth-child(4)  { left: 42%; width: 85px;  height: 85px;  animation-duration: 18s; animation-delay: 0s; }
+.bubbles li:nth-child(5)  { left: 55%; width: 25px;  height: 25px;  animation-duration: 8s;  animation-delay: 3s; }
+.bubbles li:nth-child(6)  { left: 68%; width: 90px;  height: 90px;  animation-duration: 16s; animation-delay: 1s; }
+.bubbles li:nth-child(7)  { left: 78%; width: 40px;  height: 40px;  animation-duration: 11s; animation-delay: 4s; }
+.bubbles li:nth-child(8)  { left: 88%; width: 110px; height: 110px; animation-duration: 20s; animation-delay: 2s; }
+.bubbles li:nth-child(9)  { left: 93%; width: 35px;  height: 35px;  animation-duration: 10s; animation-delay: 0s; }
+.bubbles li:nth-child(10) { left: 48%; width: 60px;  height: 60px;  animation-duration: 13s; animation-delay: 5s; }
+
+@keyframes subirBurbujas {
+  0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.7; }
+  50% { opacity: 0.9; }
+  100% { transform: translateY(-125vh) scale(1.2) rotate(360deg); opacity: 0; }
+}
+
+.login-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  padding: 9px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: conic-gradient(transparent 0deg, transparent 270deg, #00f2fe 360deg);
+  animation: girarLuz 2s linear infinite;
+}
+
+.login-card-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, .25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 13px;
+  padding: 2.5rem 2rem;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+@keyframes girarLuz {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.login-header-btnClose {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-close-login {
+  cursor: pointer;
+  background: transparent;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  color: #ef4444;
+  transition: color 0.2s;
+}
+
+.aviso-privacidad {
+  color: blue;
+  margin-bottom: 25px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.mensaje {
+  color: blue;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.logo-circle {
+  width: 56px;
+  height: 56px;
+  background: #eef2ff;
+  color: #4f46e5;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin: 0 auto 1rem auto;
+}
+
+.crear-registro {
+  display: block;
+  margin-top: 25px;
+  text-align: center;
+}
+
+.register-link {
+  color: #312e81;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.login-header h2 {
+  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.form-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  gap: 0.5rem;
+}
+
+.error-banner {
+  color: #dc2626;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid #fca5a5;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.forgot-password {
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1rem;
+  }
+
+  .login-card-content {
+    padding: 2rem 1.25rem;
+  }
+
+  .form-actions-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
 }

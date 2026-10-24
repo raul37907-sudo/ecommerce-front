@@ -14,40 +14,154 @@
 }
 
 /* Layout general */
-/* Contenedor principal con el degradado verde */
+/* Contenedor principal con el degradado  */
 .dashboard-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
+  background: linear-gradient(105deg, #0070e0  0%, #FFFFFF 100%);
   width: 100%;
 }
+
+/*--------------------------------------- movimiento  del nombre */
+
+.wave-text {  /* Márgenes solicitados */
+  margin-top: 1rem;   /* Baja el texto aproximadamente 1 o 2 centímetros */
+  margin-right: 2rem;  /* Agrega 1 cm de separación hacia la derecha */
+  margin-left: 0;      /* Asegura que no tenga margen izquierdo no deseado */
+  margin-bottom: 0;
+
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: yellow;
+}
+
+.wave-text span {
+  display: inline-block;
+  animation: waveEffect 1.2s ease-in-out infinite;
+  /* El retraso se calcula multiplicando el índice (--i) por una fracción de tiempo */
+  animation-delay: calc(0.1s * var(--i));
+}
+
+/* Definición de la onda (sube y baja) */
+@keyframes waveEffect {
+  0%, 40%, 150% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px); /* Altura de la onda */
+  }
+}
+/*************************************************movimiento  del nombre */
 
 /* Hace que toda la sección verde y de categorías permanezca fija al hacer scroll */
 .navbar-wrapper-green {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: #2ecc71;
+  background: linear-gradient(105deg, #0070e0  0%, #FFFFFF 100%);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Opcional: Si quieres que el título 'Resultados' y el filtro también queden fijos */
 .results-header {
+background: linear-gradient(105deg, #0070e0  0%, #FFFFFF 100%);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-top: 2rem; /* Espacio de separación ideal (aprox. 2 a 3 centímetros) */
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+/*#############################################################*/
 
 
+/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+/* Contenedor general de la sección */
+.beneficios-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px auto;
+  width: 90%;
+  max-width: 1100px;
+}
+
+/* Botón estilo píldora amarilla superior */
+.beneficios-badge {
+  background-color: #ffd700; /* Amarillo brillante */
+  color: #0047ab;            /* Azul corporativo fuerte para el texto */
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 12px 30px;
+  border-radius: 50px;       /* Forma de píldora */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 2;                /* Se eleva para quedar sobre la tarjeta */
+  margin-bottom: -22px;      /* Hace que se monte ligeramente sobre el borde superior de la tarjeta */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.beneficios-badge:hover {
+  transform: scale(1.02);
+}
+
+/* Tarjeta blanca contenedora */
+.beneficios-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding: 40px 20px 25px 20px; /* Padding superior extra para dar espacio al botón flotante */
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Cada elemento individual de beneficio */
+.beneficio-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Iconos de los beneficios */
+.beneficio-item i {
+  font-size: 1.8rem;
+  color: #0047ab; /* Color azul para los iconos */
+}
+
+/* Diseño responsivo para pantallas pequeñas */
+@media (max-width: 768px) {
+  .beneficios-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 50px 20px 20px 20px;
+  }
+
+  .beneficios-badge {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+  }
+}
 
 
-/* Navbar principal */
+/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&*/
+
+
+/* Navbar principal contenedor  del  nombre  y  barra  de busqueda  */
 .top-navbar {
-  background: transparent;
+background: transparent);
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 1.5rem;
@@ -116,7 +230,8 @@
   list-style: none;
   gap: 1.25rem;
   width: 100%;
-  background-color: #4682B4;
+    background: linear-gradient(105deg, #0070e0  0%, #FFFFFF 100%);
+
   padding: 0.6rem 1rem;
 }
 
@@ -130,7 +245,7 @@
 }
 
 .nav-links li a:hover {
-  background-color: #f1f5f9;
+  background-color: #FFFFFF;
 }
 
 /* CLASE PARA LA CATEGORÍA ACTIVA EN PC */
@@ -184,13 +299,12 @@
    ======================================================== */
 .main-content {
   display: flex;
-  padding: 1.25rem;
-  gap: 1.25rem;
-  background-color: var(--bg-light);
+  padding: .99rem;
+  gap: 2.25rem;
 }
 
 .products-section {
-  flex: 1;
+  flex: 2;
   min-width: 0;
 }
 
@@ -228,14 +342,15 @@
 /* TARJETAS Y REJILLA */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1rem;
 }
 
 .product-card {
+height: 300px;
   background: #ffffff;
   border-radius: 12px;
-  border: 1px solid var(--border-light);
+  border: 1.5px solid black;
   padding: 1rem;
   position: relative;
   display: flex;
@@ -247,12 +362,12 @@
 .product-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-  border-color: var(--primary-blue);
+  border-color: var(blue);
 }
 
 .product-img {
   width: 100%;
-  height: 150px;
+  height: 130px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -271,14 +386,14 @@
 }
 
 .product-title {
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 600;
   margin: 0 0 0.4rem 0;
   color: var(--text-dark);
 }
 
 .price {
-  font-size: 1.1rem;
+  font-size: .9rem;
   font-weight: 800;
   margin-bottom: 0.6rem;
   color: var(--text-dark);
@@ -287,7 +402,7 @@
 .btn-add-cart {
   width: 100%;
   background-color: var(--primary-blue);
-  color: white;
+  color: orange;
   border: none;
   padding: 0.53rem;
   border-radius: 8px;
@@ -396,47 +511,100 @@ dotlottie-player {
 
 .desktop-only {
   display: flex !important;
+
 }
 
+
+
 @media (max-width: 768px) {
-  .desktop-only {
+  .desktop-only { /* menu  de categorias correspondiente a pc,  se oculta  */
     display: none !important;
   }
+
+
 
   .mobile-only {
     display: flex !important;
   }
 
-  .top-navbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .user-actions {
-    justify-content: space-around;
-    width: 100%;
-    border-top: 1px dashed rgba(255, 255, 255, 0.3);
-    padding-top: 0.5rem;
-  }
-
-  .tooltip-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.2rem;
-  }
-
+ .top-navbar {
+ /* Aseguramos que la barra de navegación superior permita distribución en filas */
+     display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+     justify-content: space-between;
+     gap: 5px;
+     padding: 5px;
+   }
   .tooltip-text {
-    position: static;
-    visibility: visible;
-    opacity: 1;
-    transform: none;
     background: transparent;
-    color: #ffffff;
+    visibility: visible;
+    display: block;
     padding: 0;
-    box-shadow: none;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     font-weight: 500;
   }
+
+  /*tamaño del  contenedor  de beneficios */
+ /* Contenedor general de beneficios más compacto en móvil */
+   .beneficios-card {
+     padding: 8px 12px !important;
+     margin: 10px auto !important;
+     gap: 8px;
+     font-size: 0.8rem;
+   }
+
+   /* Cada ítem individual de beneficio */
+   .beneficio-item {
+     gap: 6px;
+     font-size: 0.75rem; /* Reduce el tamaño del texto */
+   }
+
+   /* Reduce el tamaño de los iconos dentro de los beneficios */
+   .beneficio-item i,
+   .beneficio-item mat-icon {
+     font-size: 1.1rem !important;
+     width: 1.1rem !important;
+     height: 1.1rem !important;
+   }
+  /* fin  del contenedor de beneficios ------------*/
+
+/*  tamaño  del  carrucel   */
+@media (max-width: 768px) {
+
+
+  /* Contenedor general del carrucel en móvil */
+
+
+
+
+
+
+  /* Si decides mostrar los banners laterales en móvil, los hacemos más pequeños o en formato horizontal */
+  .promo-side-banners {
+
+    height: auto !important;
+    gap: 10px;
+  }
+
+  .side-banner-card.mat-mdc-card {
+    height: 120px !important; /* Altura reducida para los banners laterales */
+    border-radius: 12px;
+  }
+}
+/* fin  del  contenedor  del  carrucel   */
+
+
+
+/*cambio  de color  de leyendas de acciones  usuarios*/
+  .user-actions, .tooltip-text,
+  .user-actions span {
+  color: red !important; /* Cambia '#ffffff' por el color que prefieras (ej. #38bdf8 para azul, #333333 para oscuro) */
+  }
+
+/**/
+
+
 
   .main-content {
     padding: 0.8rem;

@@ -1,0 +1,127 @@
+/* Contenedor principal que envuelve al carrusel y los banners laterales */
+.promos-container {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 20px;
+  width: 95%;
+  max-width: 800px;
+  max-height: 400px;
+  margin: 30px auto;
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------- */
+/* CONTENEDOR 1: CARRUSEL PRINCIPAL (IZQUIERDA)                  */
+/* ------------------------------------------------------------- */
+.promo-main-carousel.mat-mdc-card {
+  position: relative;
+  background: #111;
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 0 !important; /* Quita el padding interno por defecto de Material */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  /* Altura fija y profesional para que el contenedor nunca cambie de tamaño */
+    height: 380px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+
+}
+
+.carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide.active {
+  display: block;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-fit: cover; /* <--- Esto evita que la imagen salga de foco o se estire mal */
+  display: block;
+}
+
+/* Indicadores / Puntos del carrusel */
+.carousel-indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+
+.carousel-indicators .dot {
+  width: 8px;
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-indicators .dot.active {
+  background-color: #3f51b5; /* Color activo */
+  width: 20px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------- */
+/* CONTENEDORES 2 Y 3: BANNERS ESTÁTICOS (DERECHA)              */
+/* ------------------------------------------------------------- */
+.promo-side-banners {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 380px; /* Misma altura total para mantener simetría con la izquierda */
+}
+
+.side-banner-card.mat-mdc-card {
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 0 !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  flex: 1;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.side-banner-card.mat-mdc-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.side-banner-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ------------------------------------------------------------- */
+/* DISEÑO RESPONSIVO PARA MÓVILES                                       */
+/* ------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .promos-container {
+    grid-template-columns: 1fr; /* Se apilan en pantallas pequeñas */
+  }
+
+  .promo-main-carousel.mat-mdc-card {
+    min-height: 250px;
+  }
+  .promo-side-banners{
+  display: none; /* <--- Oculta por completo los banners de la derecha */
+  }
+}

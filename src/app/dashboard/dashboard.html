@@ -1,11 +1,25 @@
 <div class="dashboard-wrapper">
 
-  <!-- 1. BARRA SUPERIOR / NAVBAR (Fija) -->
+  <!-- 1. BARRA SUPERIOR / NAVBAR -->
   <div class="navbar-wrapper-green">
     <header class="top-navbar">
+
       <div class="logo-area">
         <i class="bi bi-bag-handle-fill logo-icon"></i>
-        <h1>Mi Tienda...</h1>
+        <h1 class="wave-text">
+          <span style="--i: 1;">K</span>
+          <span style="--i: 2;">'</span>
+          <span style="--i: 3;">o</span>
+          <span style="--i: 4;">n</span>
+          <span style="--i: 5;">o</span>
+          <span style="--i: 6;">l</span>
+          <span class="space" style="--i: 7;">&nbsp;</span>
+          <span style="--i: 8;">K</span>
+          <span style="--i: 9;">a</span>
+          <span style="--i: 10;">l</span>
+          <span style="--i: 11;">l</span>
+          <span style="--i: 12;">i</span>
+        </h1>
       </div>
 
       <div class="search-bar">
@@ -13,7 +27,8 @@
         <input
           type="text"
           placeholder="Buscar productos o categorías..."
-          [(ngModel)]="searchQuery"/>
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchChange()" />
         <button class="btn-search">Buscar</button>
       </div>
 
@@ -37,49 +52,76 @@
         </a>
       </div>
     </header>
-
-    <!-- MENÚ DESKTOP -->
-    <div class="desktop-only">
-      <ul class="nav-links">
-        <li><a (click)="selectCategory('todas')" [class.active-category]="selectedCategory === 'todas'" style="cursor: pointer;">🛍️ Todos los productos</a></li>
-        <li><a (click)="selectCategory('moda')" [class.active-category]="selectedCategory === 'moda'" style="cursor: pointer;">👜 Moda</a></li>
-        <li><a (click)="selectCategory('electronica')" [class.active-category]="selectedCategory === 'electronica'" style="cursor: pointer;">💻 Electrónica</a></li>
-        <li><a (click)="selectCategory('hogar')" [class.active-category]="selectedCategory === 'hogar'" style="cursor: pointer;">🏠 Hogar</a></li>
-        <li><a (click)="selectCategory('deportes')" [class.active-category]="selectedCategory === 'deportes'" style="cursor: pointer;">⚽ Deportes</a></li>
-        <li><a (click)="selectCategory('belleza')" [class.active-category]="selectedCategory === 'belleza'" style="cursor: pointer;">✨ Belleza</a></li>
-        <li><a (click)="selectCategory('juguetes')" [class.active-category]="selectedCategory === 'juguetes'" style="cursor: pointer;">🎮 Juguetes</a></li>
-        <li><a (click)="selectCategory('ofertas')" [class.active-category]="selectedCategory === 'ofertas'" class="highlight-link" style="cursor: pointer;">🔥 Ofertas</a></li>
-      </ul>
-    </div>
-
-    <!-- MENÚ MOBILE -->
-    <div class="categories-dropdown mobile-only">
-      <i class="bi bi-list menu-icon"></i>
-      <span class="dropdown-label"> Categorías </span>
-      <select class="categories-select"
-              [value]="selectedCategory"
-              (change)="selectCategory($any($event.target).value)"
-              aria-label="Seleccionar categoría">
-        <option value="todas">🛍️ Todos los productos</option>
-        <option value="moda">👜 Moda</option>
-        <option value="electronica">💻 Electrónica</option>
-        <option value="hogar">🏠 Hogar</option>
-        <option value="deportes">⚽ Deportes</option>
-        <option value="belleza">✨ Belleza</option>
-        <option value="juguetes">🎮 Juguetes</option>
-        <option value="ofertas">🔥 Ofertas</option>
-      </select>
-      <i class="bi bi-chevron-down select-icon"></i>
-    </div>
   </div>
 
   <!-- 2. CONTENIDO PRINCIPAL CON SCROLL -->
   <div class="main-content">
     <main class="products-section">
 
-      <!-- ENCABEZADO Y CONTADOR DE RESULTADOS -->
+      <div class="beneficios-section">
+        <div class="beneficios-badge">
+          <span>Beneficios de adquirir en K'onol Kalli</span>
+          <i class="bi bi-chevron-right"></i>
+        </div>
+
+        <div class="beneficios-card">
+          <div class="beneficio-item">
+            <i class="bi bi-person-check-fill"></i>
+            <span>Entrega face to face</span>
+          </div>
+          <div class="beneficio-item">
+            <i class="bi bi-box-seam"></i>
+            <span>Productos 2da mano</span>
+          </div>
+          <div class="beneficio-item">
+            <i class="bi bi-shield-check"></i>
+            <span>Compra fácil y segura</span>
+          </div>
+          <div class="beneficio-item">
+            <i class="bi bi-cash-coin"></i>
+            <span>Sin anticipos ni depósitos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARRUSEL -->
+      <div><app-carrucel></app-carrucel></div>
+
+      <!-- MENÚ DESKTOP -->
+      <div class="desktop-only">
+        <ul class="nav-links">
+          <li><a (click)="selectCategory('todas')" [class.active-category]="selectedCategory === 'todas'" style="cursor: pointer;">🛍️ Todos los productos</a></li>
+          <li><a (click)="selectCategory('moda')" [class.active-category]="selectedCategory === 'moda'" style="cursor: pointer;">👜 Moda</a></li>
+          <li><a (click)="selectCategory('electronica')" [class.active-category]="selectedCategory === 'electronica'" style="cursor: pointer;">💻 Electrónica</a></li>
+          <li><a (click)="selectCategory('hogar')" [class.active-category]="selectedCategory === 'hogar'" style="cursor: pointer;">🏠 Hogar</a></li>
+          <li><a (click)="selectCategory('deportes')" [class.active-category]="selectedCategory === 'deportes'" style="cursor: pointer;">⚽ Deportes</a></li>
+          <li><a (click)="selectCategory('belleza')" [class.active-category]="selectedCategory === 'belleza'" style="cursor: pointer;">✨ Belleza</a></li>
+          <li><a (click)="selectCategory('juguetes')" [class.active-category]="selectedCategory === 'juguetes'" style="cursor: pointer;">🎮 Juguetes</a></li>
+          <li><a (click)="selectCategory('ofertas')" [class.active-category]="selectedCategory === 'ofertas'" class="highlight-link" style="cursor: pointer;">🔥 Ofertas</a></li>
+        </ul>
+      </div>
+
+      <!-- MENÚ MOBILE -->
+      <div class="categories-dropdown mobile-only">
+        <i class="bi bi-list menu-icon"></i>
+        <span class="dropdown-label"> Categorías </span>
+        <select class="categories-select"
+                [value]="selectedCategory"
+                (change)="selectCategory($any($event.target).value)"
+                aria-label="Seleccionar categoría">
+          <option value="todas">🛍️ Todos los productos</option>
+          <option value="moda">👜 Moda</option>
+          <option value="electronica">💻 Electrónica</option>
+          <option value="hogar">🏠 Hogar</option>
+          <option value="deportes">⚽ Deportes</option>
+          <option value="belleza">✨ Belleza</option>
+          <option value="juguetes">🎮 Juguetes</option>
+          <option value="ofertas">🔥 Ofertas</option>
+        </select>
+        <i class="bi bi-chevron-down select-icon"></i>
+      </div>
+
       <div class="results-header">
-        <h2>Resultados <span>({{ filteredProducts.length }} productos)</span></h2>
         <div class="sort-options">
           <label for="sort">Ordenar por: </label>
           <select id="sort">
@@ -92,8 +134,7 @@
 
       <!-- REJILLA DINÁMICA DE PRODUCTOS -->
       <div class="products-grid">
-        @for (product of filteredProducts; track product.id) {
-        <!-- Navegación directa con routerLink en la tarjeta -->
+        @for (product of paginatedProducts; track product.id) {
         <div class="product-card" [routerLink]="['/descripcion-producto', product.id]">
           <div class="product-info">
 
@@ -108,11 +149,9 @@
               @for (star of stars; track star) {
               @if (product.rating >= star) {
               <i class="bi bi-star-fill"></i>
-              }
-              @else if (product.rating >= star - 0.5) {
+              } @else if (product.rating >= star - 0.5) {
               <i class="bi bi-star-half"></i>
-              }
-              @else {
+              } @else {
               <i class="bi bi-star"></i>
               }
               }
@@ -121,27 +160,23 @@
 
             <div class="price">${{ product.price | number:'1.2-2' }}</div>
 
-            <!-- El botón de agregar evita que se active la navegación de la tarjeta -->
             <button class="btn-add-cart" (click)="$event.stopPropagation(); $event.preventDefault();">
               <i class="bi bi-cart-plus"></i> Agregar al carrito
             </button>
           </div>
         </div>
         }
+
       </div>
 
-      <!-- PAGINACIÓN -->
-      <div class="pagination-footer">
-        <div class="pagination-controls">
-          <button class="page-btn"><i class="bi bi-chevron-left"></i></button>
-          <button class="page-btn active">1</button>
-          <button class="page-btn">2</button>
-          <button class="page-btn">3</button>
-          <button class="page-btn"><i class="bi bi-chevron-right"></i></button>
-        </div>
+      <!-- COMPONENTE PAGINADOR      -->
+      <app-paginador
+        [items]="filteredProducts"
+        [pageSize]="7"
+        (paginatedItemsChange)="onPageUpdated($event)">
+      </app-paginador>
 
-        <span class="results-count">Mostrando {{ filteredProducts.length }} productos</span>
-      </div>
+      <!--span class="results-count">Mostrando {{ filteredProducts.length }} productos</span -->
 
     </main>
   </div>

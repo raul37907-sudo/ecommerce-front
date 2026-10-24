@@ -1,0 +1,10 @@
+<div class="paginator-container">
+  <mat-paginator
+    [length]="totalLength"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"
+    aria-label="Seleccionar página de productos">
+  </mat-paginator>
+</div>
