@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 
 export interface Product {
-  id: number;
-  title: string;
+  id: string | number;
+  name?: string;     // <--- Asegurada
+  title?: string;
   price: number;
-  rating: number;
-  reviewsCount: number;
-  imageUrl: string;
-  category: string;
+  image?: string;    // <--- Asegurada
+  imageUrl?: string;
+  category?: string;
+  rating?: number;
+  reviewsCount?: number;
   description?: string;
+  [key: string]: unknown;
 }
 
 @Injectable({

@@ -2,6 +2,7 @@
 
   <!-- 1. BARRA SUPERIOR / NAVBAR -->
   <div class="navbar-wrapper-green">
+
     <header class="top-navbar">
 
       <div class="logo-area">
@@ -34,10 +35,15 @@
 
       <!-- Acciones de usuario -->
       <div class="user-actions">
-        <a *ngFor="let item of userActions"
-           (click)="handleAction(item)"
-           class="login-link tooltip-container"
-           style="cursor: pointer;">
+        @for (item of userActions; track item.label) {
+        <a
+          (click)="handleAction(item)"
+          (keyup.enter)="handleAction(item)"
+          (keyup.space)="handleAction(item)"
+          tabindex="0"
+          role="button"
+          class="login-link tooltip-container"
+          style="cursor: pointer;">
           <dotlottie-player
             [src]="item.lottieSrc"
             background="transparent"
@@ -47,12 +53,18 @@
             loop
             autoplay>
           </dotlottie-player>
-          <span *ngIf="item.badge" class="badge">{{ item.badge }}</span>
+          @if (item.badge) {
+          <span class="badge">{{ item.badge }}</span>
+          }
           <span class="tooltip-text">{{ item.label }}</span>
         </a>
+        }
       </div>
+
     </header>
   </div>
+
+  <app-cart></app-cart>
 
   <!-- 2. CONTENIDO PRINCIPAL CON SCROLL -->
   <div class="main-content">
@@ -71,7 +83,7 @@
           </div>
           <div class="beneficio-item">
             <i class="bi bi-box-seam"></i>
-            <span>Productos 2da mano</span>
+            <span>Productos casi como nuevos </span>
           </div>
           <div class="beneficio-item">
             <i class="bi bi-shield-check"></i>
@@ -90,14 +102,87 @@
       <!-- MENÚ DESKTOP -->
       <div class="desktop-only">
         <ul class="nav-links">
-          <li><a (click)="selectCategory('todas')" [class.active-category]="selectedCategory === 'todas'" style="cursor: pointer;">🛍️ Todos los productos</a></li>
-          <li><a (click)="selectCategory('moda')" [class.active-category]="selectedCategory === 'moda'" style="cursor: pointer;">👜 Moda</a></li>
-          <li><a (click)="selectCategory('electronica')" [class.active-category]="selectedCategory === 'electronica'" style="cursor: pointer;">💻 Electrónica</a></li>
-          <li><a (click)="selectCategory('hogar')" [class.active-category]="selectedCategory === 'hogar'" style="cursor: pointer;">🏠 Hogar</a></li>
-          <li><a (click)="selectCategory('deportes')" [class.active-category]="selectedCategory === 'deportes'" style="cursor: pointer;">⚽ Deportes</a></li>
-          <li><a (click)="selectCategory('belleza')" [class.active-category]="selectedCategory === 'belleza'" style="cursor: pointer;">✨ Belleza</a></li>
-          <li><a (click)="selectCategory('juguetes')" [class.active-category]="selectedCategory === 'juguetes'" style="cursor: pointer;">🎮 Juguetes</a></li>
-          <li><a (click)="selectCategory('ofertas')" [class.active-category]="selectedCategory === 'ofertas'" class="highlight-link" style="cursor: pointer;">🔥 Ofertas</a></li>
+          <li>
+            <a
+              (click)="selectCategory('todas')"
+              (keyup.enter)="selectCategory('todas')"
+              (keyup.space)="selectCategory('todas')"
+              tabindex="0"
+              role="button"
+              [class.active-category]="selectedCategory === 'todas'"
+              style="cursor: pointer;">🛍️ Todos los productos</a>
+          </li>
+          <li>
+            <a
+              (click)="selectCategory('moda')"
+              (keyup.enter)="selectCategory('moda')"
+              (keyup.space)="selectCategory('moda')"
+              tabindex="0"
+              role="button"
+              [class.active-category]="selectedCategory === 'moda'"
+              style="cursor: pointer;">👜 Moda</a>
+          </li>
+          <li>
+            <a
+              (click)="selectCategory('electronica')"
+              (keyup.enter)="selectCategory('electronica')"
+              (keyup.space)="selectCategory('electronica')"
+              tabindex="0"
+              role="button"
+              [class.active-category]="selectedCategory === 'electronica'"
+              style="cursor: pointer;">💻 Electrónica</a>
+          </li>
+          <li>
+            <a
+              (click)="selectCategory('hogar')"
+              (keyup.enter)="selectCategory('hogar')"
+              (keyup.space)="selectCategory('hogar')"
+              tabindex="0"
+              role="button"
+              [class.active-category]="selectedCategory === 'hogar'"
+              style="cursor: pointer;">🏠 Hogar</a>
+          </li>
+          <li>
+            <a
+              (click)="selectCategory('deportes')"
+              (keyup.enter)="selectCategory('deportes')"
+              (keyup.space)="selectCategory('deportes')"
+              tabindex="0"
+              role="button"
+              [class.active-category]="selectedCategory === 'deportes'"
+              style="cursor: pointer;">⚽ Deportes</a>
+          </li>
+          <li>
+            <a
+              (click)="selectCategory('belleza')"
+              (keyup.enter)="selectCategory('belleza')"
+              (keyup.space)="selectCategory('belleza')"
+              tabindex="0"
+              role="button"
+              [class.active-category]="selectedCategory === 'belleza'"
+              style="cursor: pointer;">✨ Belleza</a>
+          </li>
+          <li>
+            <a
+              (click)="selectCategory('juguetes')"
+              (keyup.enter)="selectCategory('juguetes')"
+              (keyup.space)="selectCategory('juguetes')"
+              tabindex="0"
+              role="button"
+              [class.active-category]="selectedCategory === 'juguetes'"
+              style="cursor: pointer;">🎮 Juguetes</a>
+          </li>
+          <li>
+            <a
+              (click)="selectCategory('ofertas')"
+              (keyup.enter)="selectCategory('ofertas')"
+              (keyup.space)="selectCategory('ofertas')"
+              tabindex="0"
+              role="button"
+              [class.active-category]="selectedCategory === 'ofertas'"
+              class="highlight-link"
+              style="cursor: pointer;">🔥 Ofertas</a>
+          </li>
         </ul>
       </div>
 
@@ -147,9 +232,9 @@
             <!-- RATING CON ESTRELLAS -->
             <div class="rating-container">
               @for (star of stars; track star) {
-              @if (product.rating >= star) {
+              @if ((product.rating ?? 0) >= star) {
               <i class="bi bi-star-fill"></i>
-              } @else if (product.rating >= star - 0.5) {
+              } @else if ((product.rating ?? 0) >= star - 0.5) {
               <i class="bi bi-star-half"></i>
               } @else {
               <i class="bi bi-star"></i>
@@ -160,25 +245,35 @@
 
             <div class="price">${{ product.price | number:'1.2-2' }}</div>
 
-            <button class="btn-add-cart" (click)="$event.stopPropagation(); $event.preventDefault();">
+            <!-- BOTÓN AGREGAR AL CARRITO -->
+            <button
+              class="btn-add-cart"
+              (click)="$event.stopPropagation(); $event.preventDefault(); addToCart(product)">
               <i class="bi bi-cart-plus"></i> Agregar al carrito
             </button>
           </div>
         </div>
         }
+      </div><!-- Fin de la rejilla de productos -->
 
+      <!-- COMPONENTE PAGINADOR -->
+      <div id="productos-section">
+        <app-paginador
+          [items]="filteredProducts"
+          [pageSize]="5"
+          (paginatedItemsChange)="onPageUpdated($event)">
+        </app-paginador>
       </div>
 
-      <!-- COMPONENTE PAGINADOR      -->
-      <app-paginador
-        [items]="filteredProducts"
-        [pageSize]="7"
-        (paginatedItemsChange)="onPageUpdated($event)">
-      </app-paginador>
-
-      <!--span class="results-count">Mostrando {{ filteredProducts.length }} productos</span -->
-
     </main>
+
+    <div class="contenedor-derecho">
+      <span> para agregar mas contenido</span>
+    </div>
+
   </div>
 
+  <div class="contenedor-medio">
+    <span> para agregar mas contenido</span>
+  </div>
 </div>

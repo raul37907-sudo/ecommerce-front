@@ -1,12 +1,12 @@
 <div class="product-detail-wrapper">
 
-  <!-- Botón para regresar al Dashboard -->
-  <a routerLink="/dashboard" class="btn-regresar">
-    <i class="bi bi-arrow-left"></i> Volver a la tienda
-  </a>
+  <div class="contenedor-superior">
+    <p> se agrega otro contenedor para mas informacion </p>
+  </div>
 
   <!-- Contenedor principal si el producto existe -->
-  <div *ngIf="product; else productoNoEncontrado" class="product-detail-container">
+  @if (product) {
+  <div class="product-detail-container">
 
     <!-- Columna Izquierda: Imagen del Producto -->
     <div class="detail-img-box">
@@ -41,15 +41,18 @@
       </div>
     </div>
 
+    <!-- Botón para regresar al Dashboard -->
+    <a routerLink="/dashboard" [fragment]="'productos-section'" class="btn-regresar">
+      <i class="bi bi-arrow-left"></i> Volver a la tienda
+    </a>
   </div>
-
+  } @else {
   <!-- Plantilla por si el ID no existe -->
-  <ng-template #productoNoEncontrado>
-    <div class="not-found">
-      <h2>Producto no encontrado</h2>
-      <p>Lo sentimos, el producto que buscas no existe o fue removido.</p>
-      <a routerLink="/dashboard" class="btn-regresar">Ir al inicio</a>
-    </div>
-  </ng-template>
+  <div class="not-found">
+    <h2>Producto no encontrado</h2>
+    <p>Lo sentimos, el producto que buscas no existe o fue removido.</p>
+    <a routerLink="/dashboard" class="btn-regresar">Ir al inicio</a>
+  </div>
+  }
 
 </div>

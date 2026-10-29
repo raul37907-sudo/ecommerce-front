@@ -1,0 +1,24 @@
+.paginator-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important; /* Centra la tarjeta horizontalmente en la página */
+
+  height: 70px; /* separación del objeto de arriba */
+  width: 500px;
+  max-width: 100%; /* Para que sea responsivo en celulares */
+  margin: 20px auto !important; /* El 'auto' a los lados empuja la tarjeta exactamente al centro */
+
+  border-radius: 22px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  overflow: hidden !important;
+  padding: 0 16px !important;
+}
+
+/* Esto centra los textos y botones internos de Angular Material dentro de tu tarjeta */
+.paginator-container mat-paginator {
+  background: transparent !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important; /* Centra el contenido interno del paginador */
+}

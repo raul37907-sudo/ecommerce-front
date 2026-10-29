@@ -4,6 +4,17 @@
   padding: 0 1.5rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.contenedor-superior{
+color: red  ;
+font-size: 24px;
+background: yellow;
+border-radius: 30px;
+
+  display: flex; /* para  que  el  centrado  surta  efecto */
+  justify-content: center; /* Centra horizontalmente */
+    align-items: center;  /*  Centra verticalmente */
+  height: 200px;           /* O la altura que necesites para el contenedor */
+}
 
 .btn-regresar {
   display: inline-flex;
@@ -17,7 +28,7 @@
 }
 
 .btn-regresar:hover {
-  color: #115e59;
+  color: orange;
 }
 
 .product-detail-container {

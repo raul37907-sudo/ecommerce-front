@@ -1,6 +1,14 @@
-<!-- ESTRUCTURA DEL MODAL DE REGISTRO  (click)="onClose()"  -->
-<div class="modal-overlay" ><!-- div class="modal-overlay" (click)="onClose()"hace que cierre el  modal  presionado  fuera -->
-  <div class="modal-card" (click)="$event.stopPropagation()">
+<!-- ESTRUCTURA DEL MODAL DE REGISTRO -->
+<div
+  class="modal-overlay"
+  (click)="onClose()"
+  (keyup.enter)="onClose()"
+  (keyup.space)="onClose()"
+  tabindex="0"
+  role="button">
+
+  <!-- Agregamos role="presentation" o detenemos la propagación asegurando que no active los avisos de accesibilidad interactiva -->
+  <div class="modal-card" (click)="$event.stopPropagation()" (keyup)="$event.stopPropagation()" tabindex="-1">
 
     <div class="modal-header">
       <h3>Crear nueva cuenta</h3>
@@ -9,56 +17,71 @@
     <form [formGroup]="registroForm" (ngSubmit)="onRegister()" novalidate>
 
       <!-- Nombre Completo -->
-      <div class="form-group mb-3">
-        <label>Nombre completo</label>
-        <input type="text" class="form-control" formControlName="name" placeholder="Tu nombre">
+      <div class="form-group">
+        <label for="reg-name">Nombre completo</label>
+        <input id="reg-name" type="text" class="form-control" formControlName="name" placeholder="Tu nombre">
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('name')?.hasError('required') && registroForm.get('name')?.touched">
+      @if (registroForm.get('name')?.hasError('required') && registroForm.get('name')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">⚠️ El nombre completo es obligatorio</small>
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('name')?.hasError('pattern') && registroForm.get('name')?.touched">
+      }
+      @if (registroForm.get('name')?.hasError('pattern') && registroForm.get('name')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">⚠️ El nombre solo debe contener letras y espacios</small>
       </div>
+      }
 
       <!-- Correo Electrónico -->
-      <div class="form-group mb-3">
-        <label>Correo electrónico</label>
-        <input type="email" class="form-control" formControlName="email" placeholder="correo@ejemplo.com">
+      <div class="form-group">
+        <label for="reg-email">Correo electrónico</label>
+        <input id="reg-email" type="email" class="form-control" formControlName="email" placeholder="correo@ejemplo.com">
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('email')?.hasError('email') && registroForm.get('email')?.touched">
+      @if (registroForm.get('email')?.hasError('email') && registroForm.get('email')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">⚠️ Ingresa un formato de correo electrónico válido (ej. usuario@dominio.com)</small>
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('email')?.hasError('invalidDomain') && registroForm.get('email')?.touched">
+      }
+      @if (registroForm.get('email')?.hasError('invalidDomain') && registroForm.get('email')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">
           ⚠️ El dominio del correo no está permitido. Usar: {{ allowedDomains.join(', ') }}
         </small>
       </div>
+      }
 
       <!-- Dirección -->
       <div class="form-group mb-3">
-        <label>Dirección</label>
-        <input type="text" class="form-control" formControlName="direccion" placeholder="Ingresa tu dirección">
+        <label for="reg-direccion">Dirección</label>
+        <input id="reg-direccion" type="text" class="form-control" formControlName="direccion" placeholder="Ingresa tu dirección">
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('direccion')?.hasError('required') && registroForm.get('direccion')?.touched">
+      @if (registroForm.get('direccion')?.hasError('required') && registroForm.get('direccion')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">⚠️ La dirección es obligatoria</small>
       </div>
+      }
 
       <!-- Fecha de Nacimiento -->
       <div class="form-group mb-3">
-        <label>Fecha de Nacimiento</label>
-        <input type="date" class="form-control" formControlName="fechaNacimiento" [max]="maxDate">
+        <label for="reg-nacimiento">Fecha de Nacimiento</label>
+        <input id="reg-nacimiento" type="date" class="form-control" formControlName="fechaNacimiento" [max]="maxDate">
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('fechaNacimiento')?.hasError('futureDate') && registroForm.get('fechaNacimiento')?.touched">
+      @if (registroForm.get('fechaNacimiento')?.hasError('futureDate') && registroForm.get('fechaNacimiento')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">⚠️ La fecha de nacimiento no puede ser mayor a la fecha actual</small>
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('fechaNacimiento')?.hasError('underage') && registroForm.get('fechaNacimiento')?.touched">
+      }
+      @if (registroForm.get('fechaNacimiento')?.hasError('underage') && registroForm.get('fechaNacimiento')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">⚠️ Debes tener al menos 18 años para registrarte</small>
       </div>
+      }
 
       <!-- Número Celular -->
       <div class="form-group mb-5">
-        <label>Número Celular</label>
+        <label for="reg-telefono">Número Celular</label>
         <input
+          id="reg-telefono"
           type="tel"
           class="form-control"
           formControlName="phoneNumber"
@@ -66,9 +89,11 @@
           maxlength="10"
           (keypress)="onlyNumbers($event)">
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('phoneNumber')?.hasError('pattern') && registroForm.get('phoneNumber')?.touched">
+      @if (registroForm.get('phoneNumber')?.hasError('pattern') && registroForm.get('phoneNumber')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">⚠️ Telefónico inválido, debe contener exactamente 10 dígitos numéricos</small>
       </div>
+      }
 
       <!-- Campo 1: Contraseña -->
       <div class="form-group mb-3">
@@ -91,9 +116,11 @@
           </button>
         </div>
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('password')?.hasError('minlength') && registroForm.get('password')?.touched">
+      @if (registroForm.get('password')?.hasError('minlength') && registroForm.get('password')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">⚠️ La contraseña debe tener al menos 8 caracteres</small>
       </div>
+      }
 
       <!-- Campo 2: Confirmar Contraseña -->
       <div class="form-group mb-3">
@@ -118,37 +145,39 @@
       </div>
 
       <!-- Mensajes dinámicos de coincidencia -->
-      <div class="mensaje-container" *ngIf="registroForm.get('confirmaPass')?.hasError('passwordMismatch') && registroForm.get('confirmaPass')?.touched">
+      @if (registroForm.get('confirmaPass')?.hasError('passwordMismatch') && registroForm.get('confirmaPass')?.touched) {
+      <div class="mensaje-container">
         <small class="mensaje-error">⚠️ Las contraseñas no coinciden</small>
       </div>
-      <div class="mensaje-container" *ngIf="!registroForm.get('confirmaPass')?.hasError('passwordMismatch') && registroForm.get('confirmaPass')?.value && registroForm.get('password')?.valid">
+      }
+      @if (!registroForm.get('confirmaPass')?.hasError('passwordMismatch') && registroForm.get('confirmaPass')?.value && registroForm.get('password')?.valid) {
+      <div class="mensaje-container">
         <small class="mensaje-exito">✓ ¡Contraseña confirmada correctamente!</small>
       </div>
+      }
 
       <!-- Términos y condiciones -->
       <div class="form-group mb-3">
-        <label class="checkbox-container">
-          <input type="checkbox" formControlName="acceptTerms" />
+        <label class="checkbox-container" for="reg-terms">
+          <input id="reg-terms" type="checkbox" formControlName="acceptTerms" />
           Aceptar Términos y condiciones
         </label>
         <a href="#" class="terminos-Condiciones" (click)="$event.preventDefault()">Leer términos y condiciones</a>
       </div>
-      <div class="mensaje-container" *ngIf="registroForm.get('acceptTerms')?.invalid && registroForm.get('acceptTerms')?.touched">
-        <small class="mensaje-error">⚠️ Debes aceptar los términos y condiciones para continuar</small>
+      @if (registroForm.get('acceptTerms')?.invalid && registroForm.get('acceptTerms')?.touched) {
+      <div class="mensaje-container">
+        <small class="mensaje-error">⚠️Debes aceptar los términos y condiciones para continuar</small>
       </div>
+      }
 
       <!-- Botón de Envío -->
       <button type="submit" class="btn-submit" [disabled]="registroForm.invalid">
         Registrarme
       </button>
 
-      <button type="button" class="btn-close" (click)="onClose()" >Regresar</button>
-
+      <button type="button" class="btn-close" (click)="onClose()">Regresar</button>
 
     </form>
 
   </div>
 </div>
-
-
-<!--descripcion  caracteristicas ,  imagenes,  cometarios , sugerencias del  mismo  producto -->

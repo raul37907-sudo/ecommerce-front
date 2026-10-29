@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 
@@ -10,6 +10,8 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractContro
   styleUrl: './modal-registro.component.css'
 })
 export class ModalRegistroComponent implements OnInit {
+  // Inyección moderna con inject()
+  private fb = inject(FormBuilder);
 
   @Output() closeModal = new EventEmitter<void>();
 
@@ -22,11 +24,9 @@ export class ModalRegistroComponent implements OnInit {
 
   allowedDomains: string[] = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'miempresa.com'];
 
-  constructor(private fb: FormBuilder) {}
-
   ngOnInit(): void {
     this.registroForm = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      name: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$|/)]],
       email: ['', [Validators.required, Validators.email, this.domainValidator.bind(this)]],
       direccion: ['', [Validators.required]],
       fechaNacimiento: ['', [Validators.required, this.adultValidator]],

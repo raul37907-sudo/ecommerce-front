@@ -1,0 +1,145 @@
+@if (isOpen) {
+<div class="modal-overlay">
+  <div class="modal-card">
+
+    <!-- 1. HEADER (FIJO ARRIBA) -->
+    <div class="cart-header">
+      <div class="header-left">
+        <div class="header-title-container">
+          <h2 class="header-title">Carrito de compras ({{ badgeCount }})<small>producto(s) </small> </h2>
+          <p class="header-location">📍 San José, Tláhuac, Ciudad de México ></p>
+        </div>
+      </div>
+      <button class="btn-edit">Editar </button>
+      <button (click)="toggleModal()" class="btn-close">X</button>
+    </div>
+
+    <!-- 2. CUERPO CON SCROLL (CENTRAL) -->
+    <div class="cart-body">
+
+      <!-- Vendedor / Tienda -->
+      <div class="seller-info">
+        <span class="check-circle red">✓</span>
+        <span class="seller-text">vendido en <strong>K'onol Kalli</strong> ></span>
+      </div>
+
+      <!-- Banner Envío Gratis -->
+      <div class="banner-free-shipping">
+        <div class="banner-left">
+          <span class="check-icon-teal">✓</span>
+          <span>¡Tienes entrega gratis!</span>
+        </div>
+        <span>></span>
+      </div>
+
+      <!-- Banner Descuento Extra -->
+      <div class="banner-discount">
+        <div class="banner-left">
+          <span class="tag-icon">🏷️</span>
+          <span>Ahorros al por mayor </span>
+        </div>
+        <span>></span>
+      </div>
+
+      <!-- LISTA DE PRODUCTOS -->
+      <div class="products-list">
+        @if (cartItems.length === 0) {
+        <p class="empty-cart-text">
+          El carrito está vacío.
+        </p>
+        }
+
+        @for (item of cartItems; track item.id) {
+        <div class="product-item">
+          <!-- Checkbox Rojo -->
+          <input
+            type="checkbox"
+            [checked]="item.selected"
+            (change)="toggleSelect(item.id)"
+            class="custom-checkbox"
+          />
+
+          <!-- Imagen del producto -->
+          <div class="product-img-wrapper">
+            <img [src]="item.image" [alt]="item.name" class="product-img" />
+          </div>
+
+          <!-- Detalles del producto -->
+          <div class="product-details">
+            <h4 class="product-title">{{ item.name }}</h4>
+
+            <!-- Botón Eliminar -->
+            <button (click)="removeItem(item.id)" class="btn-delete" title="Eliminar">🗑️</button>
+
+            <!-- Selector de variante -->
+            <button class="variant-selector">
+              <span>tal cual como el la imagen</span>
+              <span class="arrow-down">▼</span>
+            </button>
+
+            <!-- Badge Oferta -->
+            <div class="flash-offer-badge">
+              ⚡ Oferta relámpago
+            </div>
+
+            <!-- Fila de Precios y Contadores -->
+            <div class="price-and-controls">
+              <div class="price-box">
+                <span class="current-price">${{ (item.price * item.quantity) | number:'1.2-2' }}</span>
+                <span class="old-price">${{ (item.price * 1.5) | number:'1.2-2' }}</span>
+                <span class="discount-tag">-50%</span>
+              </div>
+
+              <!-- Control - / + -->
+              <div class="quantity-controls">
+                <button (click)="item.quantity > 1 ? item.quantity = item.quantity - 1 : null" class="btn-qty">-</button>
+                <span class="qty-number">{{ item.quantity }}</span>
+                <button (click)="item.quantity = item.quantity + 1" class="btn-qty">+</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- BANNER PROTECCIÓN AL CLIENTE -->
+      <div class="customer-protection-card">
+        <div class="protection-header">
+          <span class="protection-title">🛡️ Validación de Adquirir</span>
+          <span class="protection-more">5 más ></span>
+        </div>
+        <div class="protection-grid">
+          <div>✓ Productos de uso </div>
+          <div>✓ Sin Devolución </div>
+          <div>✓ Pago Vs Entrega</div>
+          <div>✓ Puntualidad </div>
+          <div>✓ Entrega Face to Face</div>
+          <div>✓ !No Hay Apartados¡</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. FOOTER (FIJO ABAJO) -->
+    <div class="cart-footer">
+      <label class="select-all-label">
+        <input type="checkbox" checked class="custom-checkbox" />
+        <span>Todos</span>
+      </label>
+
+      <div class="footer-actions">
+        <div class="total-box">
+          <div class="total-price">${{ totalCost | number:'1.2-2' }} <span class="arrow-up">^</span></div>
+          <div class="free-shipping-subtext">Envío gratis $59.00 de dto.</div>
+        </div>
+
+        <button [disabled]="totalCost === 0" class="btn-pay">
+          comprar ({{ badgeCount }})
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+}

@@ -1,5 +1,5 @@
 import { Component, inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { ModalRegistroComponent } from './modal-registro.component';
-import { AuthService } from '../auth.service'; // <--- Importa tu servicio
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -29,13 +29,13 @@ import { AuthService } from '../auth.service'; // <--- Importa tu servicio
 export class LoginComponent {
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
-  private authService = inject(AuthService); // <--- Inyecta el servicio
+  private authService = inject(AuthService);
 
   onClose(): void {
     this.router.navigate(['/dashboard']);
   }
 
-  isRegisterModalOpen: boolean = false;
+  isRegisterModalOpen = false;
 
   openRegisterModal(): void {
     this.isRegisterModalOpen = true;
@@ -57,7 +57,7 @@ export class LoginComponent {
     password: 'pass1234'
   };
 
-  loginValid: boolean = true;
+  loginValid = true;
 
   isValidEmailFormat(email: string): boolean {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -68,7 +68,7 @@ export class LoginComponent {
     return email === this.storedUser.email && password === this.storedUser.password;
   }
 
-  login(): void {
+login(): void {
     if (!this.isValidEmailFormat(this.user.email)) {
       this.loginValid = false;
       return;
@@ -77,8 +77,16 @@ export class LoginComponent {
     if (this.validateLogin(this.user.email, this.user.password)) {
       this.loginValid = true;
 
-      // Usa el método del servicio para guardar la sesión y notificar al Dashboard
-      this.authService.login({ email: this.user.email }, 'token_falso_abc123');
+      // DINÁMICO: Construimos el objeto UserData usando los datos reales ingresados
+      const dynamicUserData = {
+        id: new Date().getTime(), // ID único temporal basado en tiempo (o el que te devuelva tu API)
+        nombre: this.user.email.split('@')[0], // Extrae un nombre base del correo, o puedes agregar un campo de nombre en el login si lo deseas
+        email: this.user.email,
+        rol: 'CLIENTE'
+      };
+
+      // Guardamos la sesión con los datos reales del usuario
+      this.authService.login(dynamicUserData, 'token_falso_abc123');
 
       this.router.navigate(['/dashboard']);
     } else {

@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './rating.component.html'
 })
 export class RatingComponent {
-  // Recibimos la calificación (ej. 4.5)
-  @Input() rating: number = 0;
+  // Recibimos la calificación (ej. 4.5) sin anotación redundante
+  @Input() rating = 0;
 
   // Creamos un arreglo fijo [1, 2, 3, 4, 5] para iterar
   stars: number[] = [1, 2, 3, 4, 5];

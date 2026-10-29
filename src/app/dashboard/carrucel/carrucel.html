@@ -16,7 +16,16 @@
       </div>
       <div class="carousel-indicators">
         @for (product of carouselProducts; track product.id; let i = $index) {
-        <span class="dot" [class.active]="i === currentIndex" (click)="setCurrentSlide(i)"></span>
+        <span
+          class="dot"
+          [class.active]="i === currentIndex"
+          (click)="setCurrentSlide(i)"
+          (keyup.enter)="setCurrentSlide(i)"
+          (keyup.space)="setCurrentSlide(i)"
+          tabindex="0"
+          role="button"
+          [attr.aria-label]="'Ir a la diapositiva ' + (i + 1)">
+    </span>
         }
       </div>
     </mat-card>

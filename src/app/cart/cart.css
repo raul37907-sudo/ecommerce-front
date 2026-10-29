@@ -1,0 +1,387 @@
+:host {
+  display: block;
+}
+
+/* Capa Oscura Global */
+.modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 12px !important;
+}
+
+/* Tarjeta Principal del Modal (Estilo Celular Centrado) responsivo */
+.modal-card {
+  background-color: #f7f7f8 !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  height: auto !important;
+  max-height: 90vh !important; /* <--- ¡Aquí faltaba cerrar con punto y coma (!) y asegurar la regla! */
+  border-radius: 24px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+}
+
+/* Ajuste específico para pantallas muy pequeñas (smartphones) */
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+
+  .modal-card {
+    max-width: 100% !important;
+    max-height: 92vh !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 24px !important;
+    border-top-right-radius: 24px !important;
+  }
+}
+
+/* --- 1. HEADER --- */
+.cart-header {
+  background-color: #ffffff !important;
+  padding: 12px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  flex-shrink: 0 !important;
+}
+
+.header-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.btn-close {
+  background: none !important;
+  border: none !important;
+  font-size: 20px !important;
+  color: red !important;
+  cursor: pointer !important;
+}
+
+.header-title {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #111 !important;
+  margin: 0 !important;
+}
+
+.header-location {
+  font-size: 11px !important;
+  color: #888 !important;
+  margin: 2px 0 0 0 !important;
+}
+
+.btn-edit {
+  background: none !important;
+  border: none !important;
+  font-size: 13px !important;
+  color: #333 !important;
+  cursor: pointer !important;
+  font-weight: 600 !important;
+}
+
+/* --- 2. BODY CON SCROLL --- */
+.cart-body {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.seller-info {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 13px !important;
+  color: #333 !important;
+  padding: 4px 0 !important;
+}
+
+.check-circle.red {
+  background-color: #ff2442 !important;
+  color: white !important;
+  border-radius: 50% !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 10px !important;
+}
+
+.banner-free-shipping {
+  background-color: #e8f7f5 !important;
+  color: #00a884 !important;
+  padding: 10px 12px !important;
+  border-radius: 12px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.banner-discount {
+  background-color: #fdf0f0 !important;
+  color: #d93025 !important;
+  padding: 10px 12px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.banner-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* Tarjetas de Producto */
+.products-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+.empty-cart-text{
+  color: red;
+  font-size : 24px !important;
+}
+
+.product-item {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  padding: 12px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  position: relative !important;
+}
+
+.custom-checkbox {
+  accent-color: #ff2442 !important;
+  width: 18px !important;
+  height: 18px !important;
+  margin-top: 24px !important;
+  cursor: pointer !important;
+}
+
+.product-img-wrapper {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background-color: #f0f0f0 !important;
+  flex-shrink: 0 !important;
+  border: 1px solid #eaeaea !important;
+}
+
+.product-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.product-details {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.product-title {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #222 !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
+}
+
+.variant-selector {
+  background-color: #f2f2f2 !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 3px 8px !important;
+  font-size: 11px !important;
+  color: #555 !important;
+  width: fit-content !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  cursor: pointer !important;
+}
+
+.flash-offer-badge {
+  background-color: #fde8ef !important;
+  color: #e61c5d !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  width: fit-content !important;
+}
+
+.price-and-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-top: 6px !important;
+}
+
+.current-price {
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  color: #ff2442 !important;
+}
+
+.old-price {
+  font-size: 10px !important;
+  color: #999 !important;
+  text-decoration: line-through !important;
+  margin-left: 4px !important;
+}
+
+.discount-tag {
+  font-size: 9px !important;
+  color: #ff2442 !important;
+  background-color: #ffe6e8 !important;
+  padding: 1px 4px !important;
+  border-radius: 3px !important;
+  margin-left: 2px !important;
+}
+
+.quantity-controls {
+  display: flex !important;
+  align-items: center !important;
+  background-color: #f0f0f0 !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+}
+
+.btn-qty {
+  border: none !important;
+  background: none !important;
+  padding: 2px 8px !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+  color: #333 !important;
+}
+
+.qty-number {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 0 6px !important;
+}
+
+/* Posicionar la papelera arriba a la derecha */
+.btn-delete {
+  background: none !important;
+  border: none !important;
+  position: absolute !important;
+  top: 10px !important;
+  right: 12px !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  opacity: 0.7 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+/* Protección al cliente */
+.customer-protection-card {
+  background-color: #fff9f0 !important;
+  border-radius: 14px !important;
+  padding: 12px !important;
+  color: #8a5a00 !important;
+}
+
+.protection-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+}
+
+.protection-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 6px !important;
+  font-size: 10px !important;
+  opacity: 0.9 !important;
+}
+
+/* --- 3. FOOTER --- */
+.cart-footer {
+  background-color: #ffffff !important;
+  padding: 12px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border-top: 1px solid #f0f0f0 !important;
+  flex-shrink: 0 !important;
+}
+
+.select-all-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 12px !important;
+  color: #666 !important;
+}
+
+.footer-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.total-price {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  color: #ff2442 !important;
+  text-align: right !important;
+}
+
+.free-shipping-subtext {
+  font-size: 9px !important;
+  color: #00a884 !important;
+  font-weight: 600 !important;
+}
+
+.btn-pay {
+  background-color: #ff2442 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 20px !important;
+  padding: 8px 20px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+}
+
+.btn-pay:disabled {
+  background-color: #ccc !important;
+  cursor: not-allowed !important;
+}

@@ -9,6 +9,16 @@
   --error-color: #ef4444;
 }
 
+/* Oculta el ojo nativo de Edge */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+}
+
+
 /* Reset global */
 html, body {
   margin: 100;

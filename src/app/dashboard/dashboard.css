@@ -23,6 +23,40 @@
   width: 100%;
 }
 
+.contenedor-derecho{
+  color: red  ;
+  font-size: 24px;
+  background: transparent;
+  border-radius: 50px;
+   border: 1.5px solid black;
+
+    display: flex; /* para  que  el  centrado  surta  efecto */
+     justify-content: center; /* Centra horizontalmente */
+      align-items: center;  /*  Centra verticalmente */
+     height: 1062px;           /* O la altura que necesites para el contenedor */
+
+ }
+
+
+.contenedor-medio{
+ color: red  ;
+ font-size: 24px;
+ background: transparent;
+ border-radius: 50px;
+    border: 1.5px solid black;
+
+
+   display: flex; /* para  que  el  centrado  surta  efecto */
+    justify-content: center; /* Centra horizontalmente */
+     align-items: center;  /*  Centra verticalmente */
+    height: 100px;           /* O la altura que necesites para el contenedor */
+    margin-top: 110px; /* Cambia '(x)px' por los píxeles que necesites bajarlo */
+    margin-bottom: 80px; /* Separa el div 40px del elemento de abajo */
+
+
+}
+
+
 /*--------------------------------------- movimiento  del nombre */
 
 .wave-text {  /* Márgenes solicitados */
@@ -341,9 +375,12 @@ background: transparent);
 
 /* TARJETAS Y REJILLA */
 .products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
+  display: flex !important;                 /* Cambiamos a flex para controlar mejor la alineación */
+  flex-wrap: wrap !important;               /* Permite que bajen a la siguiente línea si es necesario */
+  justify-content: center !important;       /* Centra las tarjetas horizontalmente */
+  align-items: center !important;           /* <--- Centra las tarjetas verticalmente */
+  gap: 1rem !important;
+  min-height: 35% !important;              /* Asegura que el contenedor tenga altura para centrar verticalmente */
 }
 
 .product-card {
@@ -521,7 +558,9 @@ dotlottie-player {
     display: none !important;
   }
 
-
+.contenedor-derecho{
+  display: none;
+  }
 
   .mobile-only {
     display: flex !important;
