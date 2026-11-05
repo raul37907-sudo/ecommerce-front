@@ -602,9 +602,11 @@ dotlottie-player {
    /* Reduce el tamaño de los iconos dentro de los beneficios */
    .beneficio-item i,
    .beneficio-item mat-icon {
-     font-size: 1.1rem !important;
-     width: 1.1rem !important;
-     height: 1.1rem !important;
+     font-size: 1.5rem !important;
+     width: 1.5rem !important;
+     height: 1.5rem !important;
+     color: #0047ab !important;
+       display: inline-block !important;
    }
   /* fin  del contenedor de beneficios ------------*/
 

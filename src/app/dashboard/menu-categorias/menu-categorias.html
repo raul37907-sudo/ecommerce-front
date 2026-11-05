@@ -1,0 +1,107 @@
+
+<!-- MENÚ DESKTOP -->
+<div class="desktop-only">
+  <ul class="nav-links">
+    <li>
+      <a
+        (click)="selectCategory('todas')"
+        (keyup.enter)="selectCategory('todas')"
+        (keyup.space)="selectCategory('todas')"
+        tabindex="0"
+        role="button"
+        [class.active-category]="selectedCategory === 'todas'"
+        style="cursor: pointer;">🛍️ Todos los productos</a>
+    </li>
+    <li>
+      <a
+        (click)="selectCategory('moda')"
+        (keyup.enter)="selectCategory('moda')"
+        (keyup.space)="selectCategory('moda')"
+        tabindex="0"
+        role="button"
+        [class.active-category]="selectedCategory === 'moda'"
+        style="cursor: pointer;">👜 Moda</a>
+    </li>
+    <li>
+      <a
+        (click)="selectCategory('electronica')"
+        (keyup.enter)="selectCategory('electronica')"
+        (keyup.space)="selectCategory('electronica')"
+        tabindex="0"
+        role="button"
+        [class.active-category]="selectedCategory === 'electronica'"
+        style="cursor: pointer;">💻 Electrónica</a>
+    </li>
+    <li>
+      <a
+        (click)="selectCategory('hogar')"
+        (keyup.enter)="selectCategory('hogar')"
+        (keyup.space)="selectCategory('hogar')"
+        tabindex="0"
+        role="button"
+        [class.active-category]="selectedCategory === 'hogar'"
+        style="cursor: pointer;">🏠 Hogar</a>
+    </li>
+    <li>
+      <a
+        (click)="selectCategory('deportes')"
+        (keyup.enter)="selectCategory('deportes')"
+        (keyup.space)="selectCategory('deportes')"
+        tabindex="0"
+        role="button"
+        [class.active-category]="selectedCategory === 'deportes'"
+        style="cursor: pointer;">⚽ Deportes</a>
+    </li>
+    <li>
+      <a
+        (click)="selectCategory('belleza')"
+        (keyup.enter)="selectCategory('belleza')"
+        (keyup.space)="selectCategory('belleza')"
+        tabindex="0"
+        role="button"
+        [class.active-category]="selectedCategory === 'belleza'"
+        style="cursor: pointer;">✨ Belleza</a>
+    </li>
+    <li>
+      <a
+        (click)="selectCategory('juguetes')"
+        (keyup.enter)="selectCategory('juguetes')"
+        (keyup.space)="selectCategory('juguetes')"
+        tabindex="0"
+        role="button"
+        [class.active-category]="selectedCategory === 'juguetes'"
+        style="cursor: pointer;">🎮 Juguetes</a>
+    </li>
+    <li>
+      <a
+        (click)="selectCategory('ofertas')"
+        (keyup.enter)="selectCategory('ofertas')"
+        (keyup.space)="selectCategory('ofertas')"
+        tabindex="0"
+        role="button"
+        [class.active-category]="selectedCategory === 'ofertas'"
+        class="highlight-link"
+        style="cursor: pointer;">🔥 Ofertas</a>
+    </li>
+  </ul>
+</div>
+
+<!-- MENÚ MOBILE -->
+<div class="categories-dropdown mobile-only">
+  <i class="bi bi-list menu-icon"></i>
+  <span class="dropdown-label"> Categorías </span>
+  <select class="categories-select"
+          [value]="selectedCategory"
+          (change)="selectCategory($any($event.target).value)"
+          aria-label="Seleccionar categoría">
+    <option value="todas">🛍️ Todos los productos</option>
+    <option value="moda">👜 Moda</option>
+    <option value="electronica">💻 Electrónica</option>
+    <option value="hogar">🏠 Hogar</option>
+    <option value="deportes">⚽ Deportes</option>
+    <option value="belleza">✨ Belleza</option>
+    <option value="juguetes">🎮 Juguetes</option>
+    <option value="ofertas">🔥 Ofertas</option>
+  </select>
+  <i class="bi bi-chevron-down select-icon"></i>
+</div>

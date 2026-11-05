@@ -1,0 +1,95 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* MENÚ ESCRITORIO (PC) */
+.desktop-only {
+  display: flex !important;
+  width: 100%;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1.25rem;
+  width: 100%;
+  background: transparent; /* Hereda el fondo del navbar del dashboard */
+  padding: 0.6rem 1rem;
+  margin: 0;
+  align-items: center;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #1e293b;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.nav-links li a:hover {
+  background-color: #FFFFFF;
+}
+
+/* CLASE PARA LA CATEGORÍA ACTIVA EN PC */
+.active-category {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* MENÚ MÓVIL (SELECT) */
+.mobile-only {
+  display: none !important;
+}
+
+.categories-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.categories-select {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  outline: none;
+  cursor: pointer;
+  padding-right: 1.5rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.select-icon {
+  position: absolute;
+  right: 12px;
+  pointer-events: none;
+  color: #1e293b;
+}
+
+.menu-icon {
+  margin-right: 8px;
+  color: #1e293b;
+}
+
+/* MEDIA QUERIES PARA RESPONSIVIDAD */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: flex !important;
+  }
+}

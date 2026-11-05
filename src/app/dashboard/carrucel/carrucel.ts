@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { ProductService } from '../../product.service';
-import { Product } from '../../product.service'; // Asegúrate de ajustar la ruta si tu interfaz Product está en otro archivo o servicio
+import { Product } from '../../product.service';
 
 @Component({
   selector: 'app-carrucel',

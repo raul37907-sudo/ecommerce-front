@@ -9,6 +9,7 @@ import { CartService } from '../cart.service';
 import { CarrucelComponent } from './carrucel/carrucel';
 import { PaginadorComponent } from './paginador/paginador';
 import { CartComponent } from '../cart/cart';
+import { MenuCategoriasComponent } from './menu-categorias/menu-categorias';
 
 interface UserAction {
   id: string;
@@ -23,13 +24,21 @@ interface UserAction {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, FormsModule, RouterLink, CarrucelComponent, PaginadorComponent, CartComponent],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    FormsModule,
+    RouterLink,
+    CarrucelComponent,
+    PaginadorComponent,
+    CartComponent,
+    MenuCategoriasComponent
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  // Inyección moderna de dependencias
   private router = inject(Router);
   private authService = inject(AuthService);
   private productService = inject(ProductService);
@@ -40,7 +49,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   @ViewChild(PaginadorComponent) paginatorComponent!: PaginadorComponent;
 
-  // Tipos inferidos limpios (sin anotaciones redundantes)
   isLoggedIn = false;
   searchQuery = '';
   selectedCategory = 'todas';
@@ -59,11 +67,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           const element = document.getElementById('productos-section');
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            this.router.navigate([], {
-              fragment: undefined,
-              replaceUrl: true
-            });
+            this.router.navigate([], { fragment: undefined, replaceUrl: true });
           }
         }, 300);
       }
@@ -80,24 +84,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(): void {
-    const query = this.searchQuery.toLowerCase().trim();
+      const query = this.searchQuery.toLowerCase().trim();
 
-    this.filteredProducts = [...this.allProducts].filter(p => {
-      const matchesCategory = query.length > 0 ||
-        this.selectedCategory === 'todas' ||
-        p.category === this.selectedCategory;
+      this.filteredProducts = [...this.allProducts].filter(p => {
+        // Verificamos si el usuario está escribiendo algo en el buscador
+        const matchesQuery = query.length > 0 ?
+          (p.title ?? '').toLowerCase().includes(query) || (p.category && p.category.toLowerCase().includes(query)) :
+          true;
 
-      // Protegido con (p.title ?? '') para evitar errores si title es undefined
-      const matchesQuery = !query ||
-        (p.title ?? '').toLowerCase().includes(query) ||
-        (p.category && p.category.toLowerCase().includes(query));
+        // Si hay texto en la búsqueda, filtramos globalmente. Si no, respetamos la categoría seleccionada.
+        const matchesCategory = query.length > 0 ?
+          matchesQuery :
+          (this.selectedCategory === 'todas' || p.category === this.selectedCategory);
 
-      return matchesCategory && matchesQuery;
-    });
+        return matchesCategory && matchesQuery;
+      });
 
-    const pageSize = this.paginatorComponent ? this.paginatorComponent.pageSize : 7;
-    this.paginatedProducts = this.filteredProducts.slice(0, pageSize);
-  }
+      const pageSize = this.paginatorComponent ? this.paginatorComponent.pageSize : 7;
+      this.paginatedProducts = this.filteredProducts.slice(0, pageSize);
+    }
 
   onSearchChange(): void {
     if (this.paginatorComponent) {
