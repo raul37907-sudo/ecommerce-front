@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private platformId = inject(PLATFORM_ID);
   private route = inject(ActivatedRoute);
 
+
   @ViewChild(PaginadorComponent) paginatorComponent!: PaginadorComponent;
 
   isLoggedIn = false;
@@ -178,6 +179,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   logout(): void {
+    this.cartService.clearCart();
     this.authService.logout();
     this.router.navigate(['/']);
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Product } from './product.service'; // <--- Importamos la interfaz centralizada
+import { Product } from './product.service';
 
 export interface CartItem {
   id: string | number;
@@ -10,17 +10,19 @@ export interface CartItem {
   selected: boolean;
   image: string;
 }
+
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  private readonly cartStorageKey = 'cart_items';
   private cartItems: CartItem[] = [];
 
   private cartSubject = new BehaviorSubject<CartItem[]>(this.cartItems);
   cart$ = this.cartSubject.asObservable();
 
   // Control global del Modal
-  private isOpenSubject = new BehaviorSubject(false);
+  private isOpenSubject = new BehaviorSubject<boolean>(false);
   isOpen$ = this.isOpenSubject.asObservable();
 
   toggleModal(): void {
@@ -61,8 +63,34 @@ export class CartService {
     }
   }
 
+  setAllSelected(selected: boolean): void {
+    this.cartItems = this.cartItems.map(item => ({
+      ...item,
+      selected
+    }));
+    this.cartSubject.next([...this.cartItems]);
+  }
+
   removeItem(id: string | number): void {
     this.cartItems = this.cartItems.filter(item => item.id !== id);
+    this.cartSubject.next([...this.cartItems]);
+  }
+
+  /** Limpia el carrito en localStorage y en memoria (ideal al cerrar sesión) */
+  clearCart(): void {
+    this.cartItems = [];
+
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(this.cartStorageKey);
+    }
+
+    this.cartSubject.next([]);
+    this.isOpenSubject.next(false);
+  }
+
+  /** Permite cargar items frescos desde el backend al iniciar sesión */
+  setCartItems(items: CartItem[]): void {
+    this.cartItems = [...items];
     this.cartSubject.next([...this.cartItems]);
   }
 
@@ -73,6 +101,6 @@ export class CartService {
   get totalCost(): number {
     return this.cartItems
       .filter(item => item.selected)
-      .reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      .reduce((acc, item) => acc + (item.price * item.quantity), 0.00);
   }
 }

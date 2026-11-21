@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Router } from '@angular/router';
+import { Router,RouterLink } from '@angular/router';
 import { ModalRegistroComponent } from './modal-registro.component';
 import { AuthService } from '../auth.service';
 
@@ -21,7 +21,8 @@ import { AuthService } from '../auth.service';
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    ModalRegistroComponent
+    ModalRegistroComponent,
+    RouterLink
   ],
   styleUrl: './login.css',
   templateUrl: './login.html',
@@ -54,7 +55,8 @@ export class LoginComponent {
 
   storedUser = {
     email: 'test@gmail.com',
-    password: 'pass1234'
+    //email: 'raul37907@gmail.com',
+    password: '1234'
   };
 
   loginValid = true;

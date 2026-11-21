@@ -69,11 +69,11 @@
             <input type="checkbox" name="rememberMe" />
             Recordarme
           </label>
-          <a href="#" class="forgot-password" (click)="$event.preventDefault()">¿Olvidaste tu contraseña?</a>
+          <a routerLink="/forgot-password" class="forgot-password">¿Olvidaste tu contraseña?</a>
         </div>
 
         <div class="aviso-privacidad">
-          <small>Al registrarte o iniciar sesión, aceptas los Términos de uso y Política de Privacidad de straup K'onol Kalli</small>
+          <small>Al registrarte o iniciar sesión, aceptas los Términos de uso y Política de Privacidad de  K'onol Kalli</small>
         </div>
 
         <button type="submit" class="btn-submit" [disabled]="!loginForm.form.valid">
