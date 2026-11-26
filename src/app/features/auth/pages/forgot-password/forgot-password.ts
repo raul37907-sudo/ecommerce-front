@@ -1,3 +1,4 @@
+/* -- -----dir: src/app/features/auth/pages/forgot-password/forgot-password.ts */
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';

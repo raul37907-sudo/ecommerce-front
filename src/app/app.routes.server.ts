@@ -1,3 +1,4 @@
+/*-- -----dir: src/app/app.routers.server.ts*/
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [

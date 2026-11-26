@@ -1,3 +1,4 @@
+/*   -----   dir: src/app/dashboard/carrucel/carrucel.ts*/
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';

@@ -1,4 +1,5 @@
-import { Component, inject, PLATFORM_ID } from '@angular/core';
+/*-- -----dir: src/app/login/loginComponent.ts  */
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -6,9 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Router,RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ModalRegistroComponent } from './modal-registro.component';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../core/services/authService';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,6 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent {
   private router = inject(Router);
-  private platformId = inject(PLATFORM_ID);
   private authService = inject(AuthService);
 
   onClose(): void {
@@ -55,7 +55,6 @@ export class LoginComponent {
 
   storedUser = {
     email: 'test@gmail.com',
-    //email: 'raul37907@gmail.com',
     password: '1234'
   };
 
@@ -70,7 +69,7 @@ export class LoginComponent {
     return email === this.storedUser.email && password === this.storedUser.password;
   }
 
-login(): void {
+  login(): void {
     if (!this.isValidEmailFormat(this.user.email)) {
       this.loginValid = false;
       return;
@@ -79,17 +78,14 @@ login(): void {
     if (this.validateLogin(this.user.email, this.user.password)) {
       this.loginValid = true;
 
-      // DINÁMICO: Construimos el objeto UserData usando los datos reales ingresados
       const dynamicUserData = {
-        id: new Date().getTime(), // ID único temporal basado en tiempo (o el que te devuelva tu API)
-        nombre: this.user.email.split('@')[0], // Extrae un nombre base del correo, o puedes agregar un campo de nombre en el login si lo deseas
+        id: new Date().getTime(),
+        nombre: this.user.email.split('@')[0],
         email: this.user.email,
         rol: 'CLIENTE'
       };
 
-      // Guardamos la sesión con los datos reales del usuario
       this.authService.login(dynamicUserData, 'token_falso_abc123');
-
       this.router.navigate(['/dashboard']);
     } else {
       this.loginValid = false;

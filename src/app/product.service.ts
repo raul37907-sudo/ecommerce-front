@@ -1,3 +1,4 @@
+/*-- -----dir: src/app/product.service.ts*/
 import { Injectable } from '@angular/core';
 
 export interface Product {

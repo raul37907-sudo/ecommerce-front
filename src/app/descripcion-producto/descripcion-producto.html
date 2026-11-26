@@ -1,3 +1,4 @@
+/* -----dir: src/app/descripcion-producto/descripcion-producto.html*/
 <div class="product-detail-wrapper">
 
   <div class="contenedor-superior">
@@ -36,8 +37,8 @@
 
       <!-- Botones de Acción -->
       <div class="detail-actions">
-        <button class="btn-comprar">Comprar ahora</button>
-        <button class="btn-carrito">Agregar al carrito</button>
+        <button type="button" (click)="onBuyNow(product)" class="btn-comprar">Comprar ahora</button>
+        <button type="button" (click)="onAddToCart(product)" class="btn-carrito">Agregar al carrito</button >
       </div>
     </div>
 

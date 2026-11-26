@@ -1,3 +1,4 @@
+/* -- -----dir: src/app/features/auth/pages/forgot-password/forgot-password.spec.ts */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ForgotPassword } from './forgot-password';
 

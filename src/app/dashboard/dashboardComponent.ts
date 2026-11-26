@@ -1,14 +1,16 @@
-import { Component, inject, CUSTOM_ELEMENTS_SCHEMA, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, PLATFORM_ID } from '@angular/core';
+/*  -----  dir: src/app/dashboard/dashboardComponent.ts  */
+import {Component, inject, CUSTOM_ELEMENTS_SCHEMA, OnInit, AfterViewInit, OnDestroy, ViewChild, ChangeDetectorRef, PLATFORM_ID
+} from '@angular/core';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../core/services/authService';
 import { ProductService, Product } from '../product.service';
 import { CartService } from '../cart.service';
 import { CarrucelComponent } from './carrucel/carrucel';
 import { PaginadorComponent } from './paginador/paginador';
-import { CartComponent } from '../cart/cart';
 import { MenuCategoriasComponent } from './menu-categorias/menu-categorias';
 
 interface UserAction {
@@ -31,14 +33,13 @@ interface UserAction {
     RouterLink,
     CarrucelComponent,
     PaginadorComponent,
-    CartComponent,
     MenuCategoriasComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private router = inject(Router);
   private authService = inject(AuthService);
   private productService = inject(ProductService);
@@ -46,11 +47,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private cdr = inject(ChangeDetectorRef);
   private platformId = inject(PLATFORM_ID);
   private route = inject(ActivatedRoute);
+  private wasLoggedIn = false
+  private authSub?: Subscription;
+  isLoggedIn = false;
 
 
   @ViewChild(PaginadorComponent) paginatorComponent!: PaginadorComponent;
 
-  isLoggedIn = false;
   searchQuery = '';
   selectedCategory = 'todas';
 
@@ -76,34 +79,45 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
-      this.isLoggedIn = loggedIn;
-    });
+      this.wasLoggedIn = this.authService.isLoggedIn;
 
-    this.allProducts = this.productService.getProducts();
-    this.applyFilter();
+      this.authSub = this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
+        const sessionExpired = this.wasLoggedIn && !loggedIn;
+        this.isLoggedIn = loggedIn;
+        this.wasLoggedIn = loggedIn;
+
+        if (sessionExpired && this.router.url !== '/') {
+          this.router.navigate(['/']);
+        }
+      });
+
+      this.allProducts = this.productService.getProducts();
+      this.applyFilter();
+    }
+
+  ngOnDestroy(): void {
+    this.authSub?.unsubscribe();
   }
 
   applyFilter(): void {
-      const query = this.searchQuery.toLowerCase().trim();
+    const query = this.searchQuery.toLowerCase().trim();
 
-      this.filteredProducts = [...this.allProducts].filter(p => {
-        // Verificamos si el usuario está escribiendo algo en el buscador
-        const matchesQuery = query.length > 0 ?
-          (p.title ?? '').toLowerCase().includes(query) || (p.category && p.category.toLowerCase().includes(query)) :
-          true;
+    this.filteredProducts = [...this.allProducts].filter(p => {
+      const matchesQuery = query.length > 0
+        ? (p.title ?? '').toLowerCase().includes(query) ||
+          Boolean(p.category && p.category.toLowerCase().includes(query))
+        : true;
 
-        // Si hay texto en la búsqueda, filtramos globalmente. Si no, respetamos la categoría seleccionada.
-        const matchesCategory = query.length > 0 ?
-          matchesQuery :
-          (this.selectedCategory === 'todas' || p.category === this.selectedCategory);
+      const matchesCategory = query.length > 0
+        ? matchesQuery
+        : (this.selectedCategory === 'todas' || p.category === this.selectedCategory);
 
-        return matchesCategory && matchesQuery;
-      });
+      return matchesCategory && matchesQuery;
+    });
 
-      const pageSize = this.paginatorComponent ? this.paginatorComponent.pageSize : 7;
-      this.paginatedProducts = this.filteredProducts.slice(0, pageSize);
-    }
+    const pageSize = this.paginatorComponent ? this.paginatorComponent.pageSize : 7;
+    this.paginatedProducts = this.filteredProducts.slice(0, pageSize);
+  }
 
   onSearchChange(): void {
     if (this.paginatorComponent) {
@@ -137,16 +151,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   get userActions(): UserAction[] {
     const cartCount = this.cartService.totalCount;
+
+    const cartAction: UserAction = {
+      id: 'cart',
+      lottieSrc: 'https://lottie.host/1b104763-d355-49d4-80b5-b353ef8ef968/AjG0rF13jb.json',
+      size: '48px',
+      label: 'Mis Productos',
+      badge: cartCount,
+      action: () => this.cartService.openModal()
+    };
+
     if (this.isLoggedIn) {
       return [
-        {
-          id: 'cart',
-          link: '/mis-productos',
-          lottieSrc: 'https://lottie.host/1b104763-d355-49d4-80b5-b353ef8ef968/AjG0rF13jb.json',
-          size: '48px',
-          label: 'Mis Productos',
-          badge: cartCount
-        },
+        cartAction,
         {
           id: 'logout',
           lottieSrc: 'https://lottie.host/3bc557ce-3d20-4641-9fc9-43d74aa36a50/FEQIimLo00.json',
@@ -155,25 +172,32 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           action: () => this.logout()
         }
       ];
-    } else {
-      return [
-        {
-          id: 'login',
-          link: '/app-login',
-          lottieSrc: 'https://lottie.host/119020a7-3389-4758-b1fc-0e59c0cb4a25/xOQRMNyGnn.json',
-          size: '88px',
-          label: 'Iniciar sesión'
-        }
-      ];
     }
+
+    return [
+      cartAction,
+      {
+        id: 'login',
+        link: '/app-login',
+        lottieSrc: 'https://lottie.host/119020a7-3389-4758-b1fc-0e59c0cb4a25/xOQRMNyGnn.json',
+        size: '88px',
+        label: 'Iniciar sesión'
+      }
+    ];
   }
 
   handleAction(item: UserAction): void {
-    if (item.action) {
+    if (item.id === 'cart' || item.label?.toLowerCase().includes('carrito')) {
+      this.cartService.openModal();
+      return;
+    }
+
+    if (typeof item.action === 'function') {
       item.action();
-    } else if (item.id === 'cart') {
-      this.cartService.toggleModal();
-    } else if (item.link) {
+      return;
+    }
+
+    if (item.link) {
       this.router.navigate([item.link]);
     }
   }

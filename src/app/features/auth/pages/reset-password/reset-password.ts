@@ -1,3 +1,4 @@
+/* -  -- -----dir: src/app/features/auth/pages/reset-password/reset-password.ts  */
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';

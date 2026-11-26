@@ -1,7 +1,4 @@
-/* ============================================================= */
-/* ESTILOS DEL MODAL DE REGISTRO (.modal-overlay)                */
-/* ============================================================= */
-
+/*-- -----dir: src/app/login/modal-registro.component.css */
 .modal-overlay {
   position: fixed;
   top: 0;

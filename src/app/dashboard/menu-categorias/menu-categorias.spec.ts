@@ -1,3 +1,4 @@
+/*    -----   dir: src/app/dashboard/menu-categorias/menu-categorias.spec.ts*/
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MenuCategorias } from './menu-categorias';
 

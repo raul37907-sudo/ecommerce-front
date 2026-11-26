@@ -1,3 +1,4 @@
+/*    -----   dir: src/app/dashboard/menu-categorias/menu-categorias.ts*/
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule} from '@angular/common';
 

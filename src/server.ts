@@ -1,3 +1,4 @@
+/*-- -----dir: src/server.ts --*/
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,

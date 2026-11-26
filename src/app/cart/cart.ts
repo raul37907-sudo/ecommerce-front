@@ -1,8 +1,16 @@
+/* ------    dir: src/app/cart/cart.ts------------------------ */
+
+
 import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { CartService, CartItem } from '../cart.service';
 import { Subscription } from 'rxjs';
 import { jsPDF } from 'jspdf';
+
+export interface PuntoEntrega {
+  label: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-cart',
@@ -12,98 +20,130 @@ import { jsPDF } from 'jspdf';
   styleUrls: ['./cart.css']
 })
 export class CartComponent implements OnInit, OnDestroy {
-
-
-   // Lista centralizada de puntos de entrega
-    readonly puntosEntrega: string[] = [
-      'San José, Tláhuac (Punto base)',
-      'Metro Tláhuac (Línea 12)',
-      'Metro Tlaltenco (Línea 12)',
-      'Metro Zapotitlán (Línea 12)',
-      'Metro Nopalera (Línea 12)',
-      'Metro Olivos (Línea 12)',
-      'Centro de Tláhuac / Kiosco',
-      'Plaza Antenas / Periférico'
-    ];
+  readonly puntosEntrega: PuntoEntrega[] = [
+    {
+      label: 'Metro Tláhuac torniquetes sur',
+      value: 'Metro Tláhuac torniquetes sur, vista hacia cetram , del lado del elevador'
+    },
+    {
+      label: 'San José, parque',
+      value: 'San José, parque esquina de la calle 12 y Juventino Rosas'
+    },
+    {
+      label: 'San José, sur 9 esquina Chava Flores',
+      value: 'San José, Sur 9 (Cancionero) esquina Ote 18 (Chava Flores)'
+    },
+    {
+      label: 'Tláhuac, centro, iglesia',
+      value: 'Tláhuac, entre la entrada principal de la iglesia y la fuente'
+    }
+  ];
 
   private cartService = inject(CartService);
   private cdr = inject(ChangeDetectorRef);
 
-  private cartSub!: Subscription;
-  private modalSub!: Subscription;
+  private subscriptions = new Subscription();
+  private whatsappTabRef: Window | null = null;
 
+  quickBuyItem: CartItem | null = null;
   cartItems: CartItem[] = [];
   isOpen = false;
-
-  // Estado del modal de confirmación (dummy)
   showConfirmModal = false;
 
-  // Propiedades para fecha, hora y lugar de entrega
   fechaEntrega = '';
   minFechaEntrega = '';
   errorEntrega = '';
   lugarEntrega = '';
   errorLugar = '';
 
-  // Datos dummy para pruebas rápidas
   private readonly dummyWhatsappPhone = '+525561706017';
   private readonly dummyClientName = 'Cliente de Prueba';
 
   ngOnInit(): void {
-    this.cartSub = this.cartService.cart$.subscribe(items => {
-      this.cartItems = items;
-      this.cdr.detectChanges();
-    });
+    this.subscriptions.add(
+      this.cartService.cart$.subscribe((items: CartItem[]) => {
+        this.cartItems = items;
+        this.cdr.detectChanges();
+      })
+    );
 
-    this.modalSub = this.cartService.isOpen$.subscribe(open => {
-      this.isOpen = open;
-      this.cdr.detectChanges();
-    });
+    this.subscriptions.add(
+      this.cartService.quickBuy$.subscribe((item: CartItem | null) => {
+        this.quickBuyItem = item;
+        this.cdr.detectChanges();
+      })
+    );
+
+    this.subscriptions.add(
+      this.cartService.isOpen$.subscribe((isOpen: boolean) => {
+        this.isOpen = isOpen;
+        this.cdr.detectChanges();
+      })
+    );
+
+    this.subscriptions.add(
+      this.cartService.isConfirmOpen$.subscribe((isOpen: boolean) => {
+        if (isOpen) {
+          this.actualizarMinimo();
+          this.fechaEntrega = '';
+          this.errorEntrega = '';
+          this.lugarEntrega = '';
+          this.errorLugar = '';
+          this.showConfirmModal = true;
+          if (this.isOpen) {
+            this.cartService.closeModal();
+          }
+        } else {
+          this.showConfirmModal = false;
+        }
+        this.cdr.detectChanges();
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    if (this.cartSub) this.cartSub.unsubscribe();
-    if (this.modalSub) this.modalSub.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
-  /** True solo si hay productos y TODOS están seleccionados */
+  /** True solo si hay productos en el carrito y TODOS están seleccionados */
   get allSelected(): boolean {
     return this.cartItems.length > 0 && this.cartItems.every(item => item.selected);
   }
 
-  /** Solo los productos con check marcado */
+  /** Productos seleccionados dentro del carrito general */
   get selectedItems(): CartItem[] {
     return this.cartItems.filter(item => item.selected);
   }
 
-  /** Total estrictamente de los productos seleccionados */
-  get selectedTotal(): number {
-    return this.selectedItems.reduce(
+  /** Ítems que verá el modal de confirmación: solo "Comprar ahora" si existe, o los seleccionados del carrito */
+  get modalItems(): CartItem[] {
+    if (this.quickBuyItem) {
+      return [this.quickBuyItem];
+    }
+    return this.selectedItems;
+  }
+
+  get modalTotal(): number {
+    return this.modalItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0
     );
   }
 
   get totalCost(): number {
-    return this.selectedTotal;
+    return this.selectedItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
   }
 
   get badgeCount(): number {
     return this.cartService.totalCount;
   }
 
-  /** Check maestro del footer: selecciona o deselecciona todos */
   onToggleSelectAll(event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
-    this.cartItems = this.cartItems.map(item => ({
-      ...item,
-      selected: checked
-    }));
-
-    if (typeof (this.cartService as any).setAllSelected === 'function') {
-      (this.cartService as any).setAllSelected(checked);
-    }
-    this.cdr.detectChanges();
+    this.cartService.setAllSelected(checked);
   }
 
   toggleModal(): void {
@@ -187,9 +227,17 @@ export class CartComponent implements OnInit, OnDestroy {
   onLugarChange(event: Event): void {
     this.lugarEntrega = (event.target as HTMLSelectElement).value;
     if (this.lugarEntrega) {
-          this.errorLugar = '';
-        }
-        this.cdr.detectChanges();
+      this.errorLugar = '';
+    }
+    this.cdr.detectChanges();
+  }
+
+  incrementQuantity(id: string | number): void {
+    this.cartService.updateQuantity(id, 1);
+  }
+
+  decrementQuantity(id: string | number): void {
+    this.cartService.updateQuantity(id, -1);
   }
 
   // ==========================================
@@ -197,31 +245,26 @@ export class CartComponent implements OnInit, OnDestroy {
   // ==========================================
 
   openConfirmModal(): void {
-    if (this.selectedItems.length === 0) return;
-
-    // Calculamos el mínimo permitido justo al abrir el modal
+    if (this.modalItems.length === 0) return;
     this.actualizarMinimo();
-        this.fechaEntrega = '';
-        this.errorEntrega = '';
-        this.lugarEntrega = '';
-        this.errorLugar = '';
-
-        this.showConfirmModal = true;
-        if (this.isOpen) {
-          this.cartService.toggleModal();
-        }
+    this.fechaEntrega = '';
+    this.errorEntrega = '';
+    this.lugarEntrega = '';
+    this.errorLugar = '';
+    this.showConfirmModal = true;
+    if (this.isOpen) {
+      this.cartService.closeModal();
+    }
     this.cdr.detectChanges();
   }
 
   closeConfirmModal(): void {
     this.showConfirmModal = false;
-    if (!this.isOpen) {
-      this.cartService.toggleModal();
-    }
+    this.cartService.clearQuickBuy();
+    this.cartService.closeConfirmModal();
     this.cdr.detectChanges();
   }
 
-  /** Formatea el string YYYY-MM-DDTHH:MM a formato legible en español */
   private formatearFechaLegible(isoString: string): string {
     if (!isoString) return 'No especificada';
     return new Date(isoString).toLocaleString('es-MX', {
@@ -229,9 +272,6 @@ export class CartComponent implements OnInit, OnDestroy {
       timeStyle: 'short'
     });
   }
-
-  /** Genera el PDF dummy con los datos verificados */
-  private whatsappTabRef: Window | null = null;
 
   private generateDummyPdf(items: CartItem[], total: number): string {
     const doc = new jsPDF();
@@ -284,7 +324,7 @@ export class CartComponent implements OnInit, OnDestroy {
       `Fecha y hora de entrega: ${fechaEntregaTexto}`,
       `Lugar de entrega: ${lugarTexto}`,
       `Total: $${total.toFixed(2)}`,
-      `Adjunto el archivo PDF generado: ${pdfFileName}`
+      `Adjunto el folio del archivo PDF generado: ${pdfFileName}`
     ].join('\n');
 
     const encodedText = encodeURIComponent(mensaje);
@@ -303,31 +343,37 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   confirmOrder(): void {
-      const items = this.selectedItems;
-      if (items.length === 0) return;
+    const items = this.modalItems;
+    if (items.length === 0) return;
 
-      let hayError = false;
+    let hayError = false;
 
-      if (!this.fechaEntrega) {
-        this.errorEntrega = 'Selecciona una fecha y hora válida de entrega (10:00 a.m. a 8:00 p.m.).';
-        hayError = true;
-      }
-
-      if (!this.lugarEntrega) {
-        this.errorLugar = 'Por favor selecciona un punto de entrega.';
-        hayError = true;
-      }
-
-      if (hayError) {
-        this.cdr.detectChanges();
-        return;
-      }
-
-      const total = this.selectedTotal;
-      const pdfFileName = this.generateDummyPdf(items, total);
-      this.sendDummyWhatsApp(items, total, pdfFileName);
-
-      this.showConfirmModal = false;
-      this.cdr.detectChanges();
+    if (!this.fechaEntrega) {
+      this.errorEntrega = 'Selecciona una fecha y hora válida de entrega (10:00 a.m. a 8:00 p.m.).';
+      hayError = true;
     }
+
+    if (!this.lugarEntrega) {
+      this.errorLugar = 'Por favor selecciona un punto de entrega.';
+      hayError = true;
+    }
+
+    if (hayError) {
+      this.cdr.detectChanges();
+      return;
+    }
+
+    const total = this.modalTotal;
+    const pdfFileName = this.generateDummyPdf(items, total);
+    this.sendDummyWhatsApp(items, total, pdfFileName);
+
+    if (!this.quickBuyItem) {
+      this.cartService.clearCart();
+    }
+
+    this.showConfirmModal = false;
+    this.cartService.clearQuickBuy();
+    this.cartService.closeConfirmModal();
+    this.cdr.detectChanges();
+  }
 }

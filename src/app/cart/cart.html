@@ -1,29 +1,28 @@
-@if (isOpen) {
-<div class="modal-overlay">
-  <div class="modal-card">
+<!-- -------  dir: src/app/cart/cart.html--------- -->
 
-    <!-- 1. HEADER (FIJO ARRIBA) -->
+@if (isOpen) {
+<div class="modal-overlay" (click)="toggleModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <!-- 1. HEADER -->
     <div class="cart-header">
       <div class="header-left">
         <div class="header-title-container">
-          <h2 class="header-title">Carrito de compras ({{ badgeCount }})<small>producto(s) </small></h2>
+          <h2 class="header-title">Carrito de compras ({{ badgeCount }}) <small>producto(s)</small></h2>
           <p class="header-location">📍 San José, Tláhuac, Ciudad de México ></p>
         </div>
       </div>
-      <button class="btn-edit">Editar</button>
-      <button (click)="toggleModal()" class="btn-close">X</button>
+      <button type="button" class="btn-edit">Editar</button>
+      <button type="button" (click)="toggleModal()" class="btn-close">X</button>
     </div>
 
-    <!-- 2. CUERPO CON SCROLL (CENTRAL) -->
+    <!-- 2. CUERPO CON SCROLL -->
     <div class="cart-body">
-
-      <!-- Vendedor / Tienda -->
       <div class="seller-info">
         <span class="check-circle red">✓</span>
-        <span class="seller-text">vendido en <strong>K'onol Kalli</strong> ></span>
+        <span class="seller-text">Vendido en <strong>K'onol Kalli</strong> ></span>
       </div>
 
-      <!-- Banner Envío Gratis -->
       <div class="banner-free-shipping">
         <div class="banner-left">
           <span class="check-icon-teal">✓</span>
@@ -32,7 +31,6 @@
         <span>></span>
       </div>
 
-      <!-- Banner Descuento Extra -->
       <div class="banner-discount">
         <div class="banner-left">
           <span class="tag-icon">🏷️</span>
@@ -62,10 +60,10 @@
 
           <div class="product-details">
             <h4 class="product-title">{{ item.name }}</h4>
-            <button (click)="removeItem(item.id)" class="btn-delete" title="Eliminar">🗑️</button>
+            <button type="button" (click)="removeItem(item.id)" class="btn-delete" title="Eliminar">🗑️</button>
 
-            <button class="variant-selector">
-              <span>tal cual como el la imagen</span>
+            <button type="button" class="variant-selector">
+              <span>Tal cual como en la imagen</span>
               <span class="arrow-down">▼</span>
             </button>
 
@@ -81,9 +79,18 @@
               </div>
 
               <div class="quantity-controls">
-                <button (click)="item.quantity > 1 ? item.quantity = item.quantity - 1 : null" class="btn-qty">-</button>
+                <button
+                  type="button"
+                  (click)="decrementQuantity(item.id)"
+                  [disabled]="item.quantity <= 1"
+                  class="btn-qty"
+                >-</button>
                 <span class="qty-number">{{ item.quantity }}</span>
-                <button (click)="item.quantity = item.quantity + 1" class="btn-qty">+</button>
+                <button
+                  type="button"
+                  (click)="incrementQuantity(item.id)"
+                  class="btn-qty"
+                >+</button>
               </div>
             </div>
           </div>
@@ -102,13 +109,12 @@
           <div>✓ Pago Vs Entrega</div>
           <div>✓ Puntualidad</div>
           <div>✓ Entrega Face to Face</div>
-          <div>✓ !No Hay Apartados¡</div>
+          <div>✓ ¡No Hay Apartados!</div>
         </div>
       </div>
-
     </div>
 
-    <!-- 3. FOOTER (FIJO ABAJO) -->
+    <!-- 3. FOOTER -->
     <div class="cart-footer">
       <label class="select-all-label">
         <input
@@ -133,115 +139,89 @@
           (click)="openConfirmModal()"
           class="btn-pay"
         >
-          comprar ({{ selectedItems.length }})
+          Comprar ({{ selectedItems.length }})
         </button>
       </div>
     </div>
 
   </div>
 </div>
-} <!-- 👈 AQUÍ CIERRA EL @if (isOpen) DEL CARRITO -->
+}
 
-
-
-<!-- MODAL DE CONFIRMACIÓN (DUMMY) - AHORA SÍ AFUERA -->
+<!-- MODAL DE CONFIRMACIÓN -->
 @if (showConfirmModal) {
-<div
-  class="confirm-overlay"
-  (click)="closeConfirmModal()"
-  style="position: fixed; inset: 0; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; z-index: 2147483647;"
->
-  <div
-    class="confirm-card"
-    (click)="$event.stopPropagation()"
-    style="background: #fff; color: #1f2937; border-radius: 12px; width: 92%; max-width: 440px; padding: 20px; box-shadow: 0 12px 32px rgba(0,0,0,0.35); position: relative; z-index: 2147483647;"
-  >
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-      <h5 style="margin: 0; font-size: 1.1rem; font-weight: 700;">Confirmar compra (Prueba Dummy)</h5>
-      <button type="button" (click)="closeConfirmModal()" style="background: transparent; border: none; font-size: 1.2rem; cursor: pointer;">X</button>
+<div class="confirm-overlay" (click)="closeConfirmModal()">
+  <div class="confirm-card" (click)="$event.stopPropagation()">
+    <div class="confirm-header">
+      <h5 class="confirm-title">Confirmar Compra</h5>
+      <button type="button" (click)="closeConfirmModal()" class="btn-confirm-close">X</button>
     </div>
 
-    <p style="color: #6b7280; font-size: 0.85rem; margin-bottom: 10px;">
+    <p class="confirm-subtitle">
       Revisa los productos seleccionados antes de generar el PDF y abrir WhatsApp:
     </p>
 
-
-    <div style="margin-bottom: 10px;">
-      <label for="fecha-entrega" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">
+    <div class="confirm-field">
+      <label for="fecha-entrega" class="confirm-label">
         Fecha y hora de entrega
       </label>
       <input
         id="fecha-entrega"
         type="datetime-local"
-        class="fecha-entrega"
+        class="confirm-input fecha-entrega"
         [min]="minFechaEntrega"
         (change)="validarFechaEntrega($event)"
-        style="width: 100%; padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 6px;"
       />
       @if (errorEntrega) {
-      <small style="color: #dc2626; display: block; margin-top: 4px; font-size: 0.8rem;">
-        {{ errorEntrega }}
-      </small>
+      <small class="confirm-error">{{ errorEntrega }}</small>
       }
     </div>
 
-    <div style="margin-bottom: 14px;">
-      <label for="lugar-entrega" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px;">
+    <div class="confirm-field-lg">
+      <label for="lugar-entrega" class="confirm-label">
         Lugar de entrega
       </label>
       <select
         id="lugar-entrega"
+        class="confirm-input"
         [value]="lugarEntrega"
         (change)="onLugarChange($event)"
-        style="width: 100%; padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff;"
       >
         <option value="">Selecciona un punto de entrega...</option>
-        <option value="Metro Tláhuac">Metro Tláhuac</option>
-        <option value="Metro Olivos">Metro Olivos</option>
-        <option value="San José, Tláhuac">San José, Tláhuac</option>
+        @for (punto of puntosEntrega; track punto.value) {
+        <option [value]="punto.value">{{ punto.label }}</option>
+        }
       </select>
 
-      @if (!lugarEntrega) {
-      <small style="color: #dc2626; display: block; margin-top: 4px; font-size: 0.8rem;">
-        Por favor selecciona un lugar de entrega.
-      </small>
+      @if (errorLugar) {
+      <small class="confirm-error">{{ errorLugar }}</small>
       }
     </div>
 
-
-
-    <ul style="list-style: none; padding: 0; margin: 0 0 14px 0; max-height: 220px; overflow-y: auto; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
-      @for (item of selectedItems; track item.id) {
-      <li style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #f0f0f0;">
+    <ul class="confirm-items-list">
+      @for (item of modalItems; track item.id) {
+      <li class="confirm-item-row">
         <div>
           <strong>{{ item.name }}</strong>
-          <div style="color: #6b7280; font-size: 0.8rem;">
+          <div class="confirm-item-meta">
             Cant: {{ item.quantity }} × ${{ item.price | number:'1.2-2' }}
           </div>
         </div>
-        <span style="font-weight: 600;">${{ (item.price * item.quantity) | number:'1.2-2' }}</span>
+        <span class="confirm-item-subtotal">${{ (item.price * item.quantity) | number:'1.2-2' }}</span>
       </li>
       }
     </ul>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; margin-bottom: 16px;">
-      <span style="font-weight: 700;">Total:</span>
-      <span style="font-size: 1.2rem; font-weight: 800; color: #16a34a;">${{ selectedTotal | number:'1.2-2' }}</span>
+    <div class="confirm-total-row">
+      <span class="confirm-total-label">Total:</span>
+      <span class="confirm-total-amount">${{ modalTotal | number:'1.2-2' }}</span>
     </div>
 
-    <div style="display: flex; justify-content: flex-end; gap: 10px;">
-      <button
-        type="button"
-        (click)="closeConfirmModal()"
-        style="padding: 8px 14px; border-radius: 8px; border: 1px solid #d1d5db; background: #f9fafb; cursor: pointer;"
-      >
+    <div class="confirm-actions">
+      <button type="button" (click)="closeConfirmModal()" class="btn-confirm-cancel">
         Cancelar
       </button>
-      <button
-        type="button"
-        (click)="confirmOrder()"
-        style="padding: 8px 16px; border-radius: 8px; border: none; background: #16a34a; color: #fff; font-weight: 600; cursor: pointer;"
-      >
+      <button type="button" (click)="confirmOrder()" class="btn-confirm-submit">
         Confirmar (PDF + WhatsApp)
       </button>
     </div>

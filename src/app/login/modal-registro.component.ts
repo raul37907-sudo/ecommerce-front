@@ -1,3 +1,4 @@
+/*-- -----dir: src/app/login/modal-registro.component.ts */
 import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';

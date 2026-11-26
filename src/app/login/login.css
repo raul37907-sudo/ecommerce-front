@@ -1,4 +1,6 @@
-:root {
+/*-- -----dir: src/app/login/login.css  */
+
+:host {
   --primary-color: #4f46e5;
   --primary-hover: #4338ca;
   --bg-gradient-start: #667eea;
@@ -7,29 +9,19 @@
   --text-muted: #6b7280;
   --border-color: #d1d5db;
   --error-color: #ef4444;
+  display: block;
+  width: 100%;
+  min-height: 100vh;
 }
 
-/* Oculta el ojo nativo de Edge */
+/* Oculta el ojo nativo de Edge/Chrome */
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
   display: none;
 }
+
 input[type="password"]::-webkit-credentials-auto-fill-button {
   visibility: hidden;
-}
-
-
-/* Reset global */
-html, body {
-  margin: 100;
-  padding: 0;
-  width: 50%;
-  height: 50%;
-  min-height: 50vh;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #667eea;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
 }
 
 /* Contenedor principal */
@@ -44,19 +36,19 @@ html, body {
   box-sizing: border-box;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* ------------------------------------------------------------- */
 /* BURBUJAS FLOTANTES EN EL FONDO                                 */
 /* ------------------------------------------------------------- */
-
 .bubbles {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0; /* Detrás de la tarjeta */
+  z-index: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -66,14 +58,13 @@ html, body {
 .bubbles li {
   position: absolute;
   bottom: -150px;
-  background: rgba(255, 255, 255, 0.35); /* Más opaco para resaltar */
+  background: rgba(255, 255, 255, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   backdrop-filter: blur(4px);
   animation: subirBurbujas 15s infinite linear;
 }
 
-/* Distribución y velocidades */
 .bubbles li:nth-child(1)  { left: 8%;  width: 70px;  height: 70px;  animation-duration: 12s; animation-delay: 0s; }
 .bubbles li:nth-child(2)  { left: 18%; width: 30px;  height: 30px;  animation-duration: 9s;  animation-delay: 1s; }
 .bubbles li:nth-child(3)  { left: 28%; width: 50px;  height: 50px;  animation-duration: 14s; animation-delay: 2s; }
@@ -102,23 +93,21 @@ html, body {
 /* ------------------------------------------------------------- */
 /* TARJETA TRANSPARENTE + HAZ DE LUZ                             */
 /* ------------------------------------------------------------- */
-
 .login-card {
   position: relative;
   width: 100%;
   max-width: 420px;
   border-radius: 16px;
-  padding: 9px; /* Grosor del borde de luz */
+  padding: 9px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 4; /* Importante: Sobre las burbujas */
+  z-index: 4;
 }
 
-/* Rayo Neón Giratorio */
 .login-card::before {
   content: '';
   position: absolute;
@@ -132,12 +121,11 @@ html, body {
   animation: girarLuz 2s linear infinite;
 }
 
-/* Capa Interna Transparente con Glassmorphism */
 .login-card-content {
   position: relative;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, .25); /* Transparencia equilibrada */
+  background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-radius: 13px;
@@ -158,7 +146,6 @@ html, body {
 /* ------------------------------------------------------------- */
 /* ESTILOS INTERNOS                                              */
 /* ------------------------------------------------------------- */
-
 .login-header {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -180,14 +167,14 @@ html, body {
 }
 
 .aviso-privacidad {
-  color: blue;
+  color: #1e3a8a;
   margin-bottom: 25px;
   font-weight: 500;
   font-size: 0.8rem;
 }
 
 .mensaje {
-  color: blue;
+  color: #1e3a8a;
   margin-bottom: 25px;
   text-align: center;
 }
@@ -297,16 +284,19 @@ html, body {
   font-size: 0.85rem;
   gap: 0.5rem;
 }
-.error-banner{
-color: #dc2626; /* Rojo intenso para el texto */
-  font-family: Arial, Helvetica, sans-serif; /* Tipografía Arial */
+
+.error-banner {
+  color: #dc2626;
+  background-color: #fef2f2;
   border: 1px solid #fca5a5;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
 }
+
 .checkbox-container {
   display: flex;
   align-items: center;
@@ -332,19 +322,18 @@ color: #dc2626; /* Rojo intenso para el texto */
   font-weight: 600;
   cursor: pointer;
   display: block;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-submit:hover:not(:disabled) {
   background-color: #4338ca;
-  /* movimiento cuando  pasas el cursor  */
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 15px 25px rgba(236, 72, 153, 0.5);
+  box-shadow: 0 15px 25px rgba(79, 70, 229, 0.35);
 }
 
 .btn-submit:disabled {
-  background-color: #9ca3af !important;
-  color: #f3f4f6 !important;
+  background-color: #9ca3af;
+  color: #f3f4f6;
   cursor: not-allowed;
   opacity: 0.7;
 }

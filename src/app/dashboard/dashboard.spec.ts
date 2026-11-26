@@ -1,3 +1,5 @@
+/*  -----  dir: src/app/dashboard/dashboard.spec.ts  */
+:
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Dashboard } from './dashboard';
 

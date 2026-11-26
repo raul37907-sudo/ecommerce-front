@@ -1,3 +1,4 @@
+/*   -----   dir: src/app/dashboard/carrucel/carrucel.spec.ts*/
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Carrucel } from './carrucel';
 

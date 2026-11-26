@@ -1,3 +1,4 @@
+/*    -----dir: src/app/descripcion-producto/descripcion-producto.component.spec.ts*/
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DescripcionProductoComponent } from './descripcion-producto.component';
 

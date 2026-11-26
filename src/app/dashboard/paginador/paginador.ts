@@ -1,3 +1,4 @@
+/*    -----dir: src/app/dashboard/paginador/paginador.ts*/
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatPaginatorModule, PageEvent, MatPaginator } from '@angular/material/paginator';

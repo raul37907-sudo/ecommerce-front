@@ -1,3 +1,4 @@
+/*-- -----dir: src/app/app.routers.ts*/
 import { Routes } from '@angular/router';
 import { DashboardComponent}  from './dashboard/dashboardComponent';
 import { LoginComponent}  from './login/loginComponent';
@@ -12,5 +13,5 @@ export const routes: Routes = [
    { path:  '', component: DashboardComponent,},
    { path: 'app-login',    component:LoginComponent,},     //ruta explícita para inicio  de sesión
    { path: 'descripcion-producto/:id', component: DescripcionProductoComponent },
-   { path: '**',  redirectTo: '' }//si  se intenta  entrar a una ruta que no  existe , redirige a productos
+   { path: '**',  redirectTo: '' } //si  se intenta  entrar a una ruta que no  existe , redirige a productos
   ];
